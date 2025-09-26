@@ -24,8 +24,8 @@
 
 ;;; Guardrail
 
-(when (< emacs-major-version 29)
-  (error "Emacs Bedrock only works with Emacs 29 and newer; you have version %s" emacs-major-version))
+(when (< emacs-major-version 31)
+  (error "Emacs Bedrock only works with Emacs 31 and newer; you have version %s" emacs-major-version))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -132,6 +132,9 @@ If the new path's directories does not exist, create them."
 (setopt completions-group t)
 (setopt completion-auto-select 'second-tab)            ; Much more eager
 ;(setopt completion-auto-select t)                     ; See `C-h v completion-auto-select' for more possible values
+
+(setopt completion-eager-display t)                    ; Show the completions buffer immediately
+(setopt completion-eager-update t)                     ; Update display as-you-type
 
 (keymap-set minibuffer-mode-map "TAB" 'minibuffer-complete) ; TAB acts more like how it does in the shell
 
