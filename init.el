@@ -102,13 +102,12 @@ If the new path's directories does not exist, create them."
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Show the help buffer after startup
+;; Show the help buffer after startup---makes it a little bit like nano
 (add-hook 'after-init-hook 'help-quick)
 
 ;; which-key: shows a popup of available keybindings when typing a long key
 ;; sequence (e.g. C-x ...)
 (use-package which-key
-  :ensure t
   :config
   (which-key-mode))
 
@@ -130,11 +129,15 @@ If the new path's directories does not exist, create them."
 (setopt completions-max-height 20)                     ; This is arbitrary
 (setopt completions-format 'one-column)
 (setopt completions-group t)
-(setopt completion-auto-select 'second-tab)            ; Much more eager
-;(setopt completion-auto-select t)                     ; See `C-h v completion-auto-select' for more possible values
 
+;; Eager completion setup: show *Completions* buffer immediately
+(setopt completion-auto-select t)	               ; Much more eager
 (setopt completion-eager-display t)                    ; Show the completions buffer immediately
 (setopt completion-eager-update t)                     ; Update display as-you-type
+
+;; Calmer completion setup: show *Completions* buffer on tab
+;(setopt completion-auto-select 'second-tab)
+;(setopt completion-eager-display nil)
 
 (keymap-set minibuffer-mode-map "TAB" 'minibuffer-complete) ; TAB acts more like how it does in the shell
 
