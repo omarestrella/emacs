@@ -62,7 +62,8 @@
 (setopt auto-revert-check-vc-info t)
 (global-auto-revert-mode)
 
-;; Save history of minibuffer
+;; Save history of minibuffer: future invocations will have
+;; recently-used selections sorted first
 (savehist-mode)
 
 ;; Move through windows with Ctrl-<arrow keys>
@@ -131,13 +132,10 @@ If the new path's directories does not exist, create them."
 (setopt completions-group t)
 
 ;; Eager completion setup: show *Completions* buffer immediately
-(setopt completion-auto-select t)	               ; Much more eager
+(setopt completion-auto-select 'second-tab)            ; Much more eager
 (setopt completion-eager-display t)                    ; Show the completions buffer immediately
 (setopt completion-eager-update t)                     ; Update display as-you-type
 
-;; Calmer completion setup: show *Completions* buffer on tab
-;(setopt completion-auto-select 'second-tab)
-;(setopt completion-eager-display nil)
 
 (keymap-set minibuffer-mode-map "TAB" 'minibuffer-complete) ; TAB acts more like how it does in the shell
 
