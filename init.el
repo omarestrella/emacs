@@ -69,8 +69,13 @@
 ;; Move through windows with Ctrl-<arrow keys>
 (windmove-default-keybindings 'control) ; You can use other modifiers here
 
-;; Fix archaic defaults
+;; Fix archaic defaults; justification: https://practicaltypography.com/one-space-between-sentences.html
 (setopt sentence-end-double-space nil)
+
+;; Make all confirmation prompts use `y' or `n'. Default is for some
+;; prompts to ask for a full `yes' or `no' when the operation is
+;; potentially dangerous. Commented out to keep the safer behavior.
+; (setopt use-short-answers t)
 
 ;; Make right-click do something sensible
 (when (display-graphic-p)
