@@ -34,8 +34,14 @@
   :config
   ;; Treesitter config
 
+  ;; Amount to highlight: integer between 1-4
+  (setopt treesit-font-lock-level 4)
+
+  ;; What to do if language grammar not installed: default is `ask';
+  ;; other options are `always', and `ask-dir'.
+  (setopt treesit-auto-install-grammar 'ask)
+
   ;; Tell Emacs to prefer the treesitter mode
-  ;; You'll want to run the command `M-x treesit-install-language-grammar' before editing.
   (setq major-mode-remap-alist
         '((yaml-mode . yaml-ts-mode)
           (bash-mode . bash-ts-mode)
