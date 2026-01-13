@@ -23,6 +23,7 @@
   :init
   (setq evil-respect-visual-line-mode t)
   (setq evil-undo-system 'undo-redo)
+  (defvar evil-mode-buffers '())	; Bug as of 2026-01-12; see https://github.com/emacs-evil/evil/issues/1983
 
   ;; Enable this if you want C-u to scroll up, more like pure Vim
   ;(setq evil-want-C-u-scroll t)
