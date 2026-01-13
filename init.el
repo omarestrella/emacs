@@ -132,14 +132,17 @@ If the new path's directories does not exist, create them."
 (setopt completion-styles '(basic initials substring)) ; Different styles to match input to candidates
 
 (setopt completion-auto-help 'always)                  ; Open completion always; `lazy' another option
-(setopt completions-max-height 20)                     ; This is arbitrary
-(setopt completions-format 'one-column)
+(setopt completions-max-height 20)                     ; This is an arbitrary value
+(setopt completions-format 'one-column)                ; Makes it easier to scroll
 (setopt completions-group t)
 
 ;; Eager completion setup: show *Completions* buffer immediately
 (setopt completion-auto-select 'second-tab)            ; Much more eager
 (setopt completion-eager-display t)                    ; Show the completions buffer immediately
 (setopt completion-eager-update t)                     ; Update display as-you-type
+
+;; Uncomment to get automatic inline completion previews
+;(completion-preview-mode)
 
 
 (keymap-set minibuffer-mode-map "TAB" 'minibuffer-complete) ; TAB acts more like how it does in the shell
@@ -193,6 +196,12 @@ If the new path's directories does not exist, create them."
 ;; Modes to highlight the current line with
 (let ((hl-line-hooks '(text-mode-hook prog-mode-hook)))
   (mapc (lambda (hook) (add-hook hook 'hl-line-mode)) hl-line-hooks))
+
+;; Show matching delimiters
+(setopt show-paren-delay 0)
+(setopt show-paren-mode t)
+(setopt show-paren-style 'expression)   ; default is 'parenthesis and just does delimiters
+(setopt show-paren-context-when-offscreen 'overlay)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
