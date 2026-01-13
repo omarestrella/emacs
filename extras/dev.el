@@ -120,6 +120,13 @@
   ;; Sometimes you need to tell Eglot where to find the language server
   ; (add-to-list 'eglot-server-programs
   ;              '(haskell-mode . ("haskell-language-server-wrapper" "--lsp")))
+
+  ;; You can set various options for each language server. For
+  ;; example, you can raise the number of completions surfaced by a
+  ;; given langauge server to Emacs:
+  (setopt eglot-workspace-configuration
+	  '((haskell (maxCompletions . 100))
+	    (elixir  (maxCompletions . 100))))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
