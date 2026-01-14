@@ -8,8 +8,8 @@ An /extremely/ minimal Emacs starter kit uses just one external package by defau
 As of 2024-02-07, Bedrock is officially hosted on [[https://codeberg.org/ashton314/emacs-bedrock][Codeberg]].
 
 Mirrors:
-- [[https://sr.ht/~ashton314/emacs-bedrock/][Old project on SourceHut]]
 - [[https://github.com/ashton314/emacs-bedrock][GitHub]] (just a place holder)
+- [[https://sr.ht/~ashton314/emacs-bedrock/][Old project on SourceHut]] (very out-of-date, do not use)
 
 *NOTICE:* Requires Emacs 31.1 or better.
 
@@ -30,13 +30,13 @@ This is a minimal Emacs starter kit. Like, /really/ minimal. Here's the short of
 
 There are two files of interest: =early-init.el= and =init.el=.
 
-** =early-init.el=
+*** =early-init.el=
 The early init file uses /strictly/ built-in Emacs features to do the following:
 
 - Improve startup time
 - Set up initial frame behavior
 
-** =init.el=
+*** =init.el=
 This is where the meat of all configuration goes. This file:
 
 - Add minor UI niceties (e.g. clock in the tab-bar, full-screen by default, etc.)
@@ -47,6 +47,16 @@ This is where the meat of all configuration goes. This file:
 Emacs 29.1 added the handy =--init-directory= flag. This means that you can run =emacs --init-directory path/to/emacs-bedrock/= and all the customizations and package installations will be isolated to the project directory. Emacs should only add files that are already in the =.gitignore=.
 
 Once you're happy, you should just copy =init.el= and =early-init.el= to =~/.emacs.d/=.
+
+** Learning Emacs with Bedrock
+Bedrock doesn't try to take care of all your needs. Instead, it's here to give you enough of a head-start that you can be productive /now/ and also point you in the right direction so that you can learn to configure and extend Emacs yourself.
+
+*You should read the Bedrock source files.* There is a lot of information contained in comments that will help you customize Bedrock further to better suit your needs and preferences. Beyond reading the Bedrock source, you should also get comfortable with Emacs' built-in documentation. You should learn these commands and use them frequently as you explore:
+
+- =describe-key= (=C-h k=) Prompts you for a keystroke, and tells you what function it invokes. Every key in Emacs triggers some function call. You can go look at the source of that function and read its documentation to figure out what it does.
+- =describe-function= (=C-h f=) Asks for a function name, and then shows you the documentation for that function.
+- =describe-variable= (=C-h v=) Similar to =describe-function=, but for variables. Use this when you want to know what a configuration option does.
+- =info-emacs-manual= (=C-h r=) Read the built-in Emacs manual. It is extensive. Use the keys =m= and =i= to access the menu for the current page and the index for the current manual, respectively.
 
 * Screenshots
 What you should see on opening Emacs up with Bedrock installed: a simple splash screen, [[https://protesilaos.com/emacs/modus-themes][modus-vivendi]] active, and the =help-quick= display at the bottom.

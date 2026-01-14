@@ -187,6 +187,9 @@ If the new path's directories does not exist, create them."
 ;; Use common keystrokes by default
 (cua-mode)
 
+;; Makes it easier to repeat commands; `C-x o C-x o' becomes `C-x o o'
+(repeat-mode)
+
 ;; Display line numbers in programming mode
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 (setopt display-line-numbers-width 3)           ; Set a minimum width
