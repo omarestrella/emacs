@@ -34,22 +34,16 @@
   :config
   ;; Treesitter config
 
-  ;; Amount to highlight: integer between 1-4
+  ;; Enable tree-sitter in all available modes
+  (setopt treesit-enabled-modes t)
+
+  ;; Amount to highlight: integer between 1-4; 4 is max highlighting
   (setopt treesit-font-lock-level 4)
 
   ;; What to do if language grammar not installed: default is `ask';
   ;; other options are `always', and `ask-dir'.
   (setopt treesit-auto-install-grammar 'ask)
 
-  ;; Tell Emacs to prefer the treesitter mode
-  (setq major-mode-remap-alist
-        '((yaml-mode . yaml-ts-mode)
-          (bash-mode . bash-ts-mode)
-          (js2-mode . js-ts-mode)
-          (typescript-mode . typescript-ts-mode)
-          (json-mode . json-ts-mode)
-          (css-mode . css-ts-mode)
-          (python-mode . python-ts-mode)))
   :hook
   ;; Auto parenthesis matching
   ((prog-mode . electric-pair-mode)))
