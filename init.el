@@ -163,6 +163,7 @@ If the new path's directories does not exist, create them."
 ;; Mode line information
 (setopt line-number-mode t)                        ; Show current line in modeline
 (setopt column-number-mode t)                      ; Show column as well
+(setopt mode-line-collapse-minor-modes nil)        ; nil is default; setting to t hides minor modes
 
 (setopt x-underline-at-descent-line nil)           ; Prettier underlines
 (setopt switch-to-buffer-obey-display-actions t)   ; Make switching buffers more consistent
@@ -193,9 +194,12 @@ If the new path's directories does not exist, create them."
 ;; Nice line wrapping when working with text
 (add-hook 'text-mode-hook 'visual-line-mode)
 
-;; Modes to highlight the current line with
-(let ((hl-line-hooks '(text-mode-hook prog-mode-hook)))
-  (mapc (lambda (hook) (add-hook hook 'hl-line-mode)) hl-line-hooks))
+(setopt global-hl-line-sticky-flag 'window) ; Every window gets own hl-line instance
+(global-hl-line-mode)
+
+;; Use this to enable the line highlight in certain modes:
+;(let ((hl-line-hooks '(text-mode-hook prog-mode-hook)))
+;  (mapc (lambda (hook) (add-hook hook 'hl-line-mode)) hl-line-hooks))
 
 ;; Show matching delimiters
 (setopt show-paren-delay 0)
