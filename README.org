@@ -163,7 +163,6 @@ Other packages that I use personally, but are not on GNU or non-GNU ELPA and so 
 
 - [[https://github.com/emacs-evil/evil-collection][Evil-Collection]] Add Evil-friendly keybindings to lots of corners of Emacs
 - [[https://github.com/cofi/evil-leader][Evil-Leader]] Setting a prefix (i.e. “leader”) key
-- [[https://github.com/gregsexton/origami.el][Origami]] Code folding
 
 ** Researcher: =extras/researcher.el=
 Packages this extra includes:

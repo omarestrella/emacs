@@ -163,7 +163,7 @@ If the new path's directories does not exist, create them."
 ;; Mode line information
 (setopt line-number-mode t)                        ; Show current line in modeline
 (setopt column-number-mode t)                      ; Show column as well
-(setopt mode-line-collapse-minor-modes nil)        ; nil is default; setting to t hides minor modes
+(setopt mode-line-collapse-minor-modes nil)        ; nil default; set to `t' to hide minor modes
 
 (setopt x-underline-at-descent-line nil)           ; Prettier underlines
 (setopt switch-to-buffer-obey-display-actions t)   ; Make switching buffers more consistent
@@ -175,10 +175,10 @@ If the new path's directories does not exist, create them."
 (setopt mouse-wheel-tilt-scroll t)
 (setopt mouse-wheel-flip-direction t)
 
-;; We won't set these, but they're good to know about
-;;
-;; (setopt indent-tabs-mode nil)
-;; (setopt tab-width 4)
+;; These are too personal to prescribe a default; uncomment and
+;; configure according to your tastes
+;(setopt indent-tabs-mode nil) ; Only use spaces to perform indentation
+;(setopt tab-width 4)
 
 ;; Misc. UI tweaks
 (blink-cursor-mode -1)                                ; Steady cursor
@@ -200,7 +200,7 @@ If the new path's directories does not exist, create them."
 (setopt global-hl-line-sticky-flag 'window) ; Every window gets own hl-line instance
 (global-hl-line-mode)
 
-;; Use this to enable the line highlight in certain modes:
+;; Use this to enable the line highlight in only certain modes:
 ;(let ((hl-line-hooks '(text-mode-hook prog-mode-hook)))
 ;  (mapc (lambda (hook) (add-hook hook 'hl-line-mode)) hl-line-hooks))
 
