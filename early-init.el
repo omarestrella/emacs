@@ -26,6 +26,10 @@
 ;; Silence stupid startup message
 (setq inhibit-startup-echo-area-message (user-login-name))
 
+;; Tell use-package to install if missing by default
+;; Use `:ensure nil' in packages you *don't* want to install
+(setq use-package-always-ensure t)
+
 ;; Default frame configuration: full screen, good-looking title bar on macOS
 (setq frame-resize-pixelwise t)
 (when (display-graphic-p)   ; When in a GUI, disable tool bar. Also, prevent error on terminal.

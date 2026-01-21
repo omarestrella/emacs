@@ -61,7 +61,6 @@
 
 ;; Magit: best Git client to ever exist
 (use-package magit
-  :ensure t
   :bind (("C-x g" . magit-status)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -71,14 +70,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package markdown-mode
-  :ensure t
   :hook ((markdown-mode . visual-line-mode)))
 
-(use-package yaml-mode
-  :ensure t)
+(use-package yaml-mode)
 
-(use-package json-mode
-  :ensure t)
+(use-package json-mode)
 
 ;; Emacs ships with a lot of popular programming language modes. If it's not
 ;; built in, you're almost certain to find a mode for the language you're
@@ -130,7 +126,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package tempel
-  :ensure t
   ;; By default, tempel looks at the file "templates" in
   ;; user-emacs-directory, but you can customize that with the
   ;; tempel-path variable:

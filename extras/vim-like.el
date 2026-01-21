@@ -18,8 +18,6 @@
 
 ;; Evil: vi emulation
 (use-package evil
-  :ensure t
-
   :init
   (setq evil-respect-visual-line-mode t)
   (setq evil-undo-system 'undo-redo)
