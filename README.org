@@ -3,18 +3,18 @@
 Stepping stones to a better Emacs experience
 
 * Synopsis
-An /extremely/ minimal Emacs starter kit uses just one external package by default, and only GNU-ELPA packages on an opt-in basis. Intended to be copied once and then modified as the user grows in knowledge and power.
+An /extremely/ minimal Emacs starter kit that uses no external packages by default, and only GNU-ELPA packages on an opt-in basis. Intended to be copied once and then modified as the user grows in knowledge and power.
 
 As of 2024-02-07, Bedrock is officially hosted on [[https://codeberg.org/ashton314/emacs-bedrock][Codeberg]].
 
-Mirrors:
+Links of historical interest:
 - [[https://github.com/ashton314/emacs-bedrock][GitHub]] (just a place holder)
 - [[https://sr.ht/~ashton314/emacs-bedrock/][Old project on SourceHut]] (very out-of-date, do not use)
 
 *NOTICE:* Requires Emacs 31.1 or better.
 
 * Description
-This is a minimal Emacs starter kit. Like, /really/ minimal. Here's the short of the philosophy:
+This is a minimal Emacs starter kit focused on setting up built-in behaviors rather than relying on third-party packages. Here's the short of the philosophy:
 
 - Focus on using default, built-in Emacs behavior
 
@@ -121,7 +121,6 @@ Packages this extra adds:
 - [[https://github.com/minad/corfu][Corfu]]
 - [[https://github.com/minad/consult][Consult]]
 - [[https://github.com/oantolin/orderless][Orderless]]
-- [[https://github.com/mhayashi1120/Emacs-wgrep][wgrep]]
 
 Along with a few ancillary packages that enhance the above.
 
@@ -129,7 +128,7 @@ These are some of the best UI enhancements that Emacs has to offer. Vertico and 
 
 Avy is the fastest way to move around in a buffer, and it can do a /lot/.[fn:1] Embark is kind of like a right-click context menu, but entirely keyboard driven.
 
-wgrep makes grep buffers editable. This means you can =consult-ripgrep= → search project → =embark-act= → =embark-export= → =wgrep-change-to-wgrep-mode= to do search-and-replace across an entire project in one fell swoop. See [[https://lambdaland.org/posts/2023-05-31_warp_factor_refactor/][Warp Factor Refactoring]] for more on this workflow.
+Versions of Bedrock up to 1.5.0 used the [[https://github.com/mhayashi1120/Emacs-wgrep][wgrep]] package to enable multi-file search-and-edit. See [[https://lambdaland.org/posts/2023-05-31_warp_factor_refactor/][Warp Factor Refactoring]] for more on this workflow. As of Bedrock 2.0.0, wgrep has been removed in favor of using the built-in =grep-change-to-grep-edit-mode=.
 
 ** Development tools: =extras/dev.el=
 Packages this extra adds:
@@ -150,7 +149,7 @@ Built-in packages that this extra configures:
 Both of these packages are new in Emacs 29 and received substantial upgrades through version 31. In particular, Emacs 31 added automatic installation of tree-sitter grammars.
 
 ** Org-mode: =extras/org.el=
-This extra configures =org-mode=. There is a /lot/ that Bedrock cannot configure out of the box---you will need to modify all variables to fit your file system and needs, as explained in comments in the file.
+This extra configures =org-mode=. There is a /lot/ that Bedrock cannot configure out of the box—you will need to modify all variables to fit your file system and needs, as explained in comments in the file.
 
 ** Vim refugee: =extras/vim-like.el=
 Packages this extra adds:
@@ -253,7 +252,7 @@ See the [[https://codeberg.org/ashton314/emacs-bedrock/issues][issue tracker]] o
 
 - 1.5.0
 
-  2025-07-15
+  Released: 2025-07-15
 
   Add TempEL to =extras/dev.el=.
 
@@ -263,7 +262,7 @@ See the [[https://codeberg.org/ashton314/emacs-bedrock/issues][issue tracker]] o
 
 - 1.4.0
 
-  2024-12-14
+  Released: 2024-12-14
 
   Add =extras/writer.el=.
 
@@ -283,49 +282,49 @@ See the [[https://codeberg.org/ashton314/emacs-bedrock/issues][issue tracker]] o
 
 - 1.2.0
 
-  2023-09-21
+  Released: 2023-09-21
 
   Add packages [[https://github.com/minad/cape][Cape]] (+ basic configuration) and wgrep. Add a binding for =consult-ripgrep=.
 
 - 1.1.0
 
-  2023-09-08
+  Released: 2023-09-08
 
   Rename “mixins” → “extras”, as mixin has the flavor of being some kind of special thingy. “Extra” gets at the purpose of these files.
 
 - 1.0.0
 
-  2023-09-04
+  Released: 2023-09-04
 
   First “stable” release! Line number width improved, fix default load paths, expand Eglot and Vertico config, fix Corfu load.
 
 - 0.2.1
 
-  2023-06-20
+  Released: 2023-06-20
 
   Minor bug fixes; add Embark package.
 
 - 0.2.0
 
-  2023-03-14
+  Released: 2023-03-14
 
   Flesh out the =mixin/vim-like.el= so that there's /some/ Vim configuration.
 
 - 0.1.0
 
-  2023-01-17
+  Released: 2023-01-17
 
   Begin work on =mixin/org.el=, turn on windmove-mode.
 
 - 0.0.2
 
-  2023-01-03
+  Released: 2023-01-03
 
   Reorganize to slim down =early-init.el= and add the first mixin files.
 
 - 0.0.1
 
-  2023-01-03
+  Released: 2023-01-03
 
   Initial “release”.
 
