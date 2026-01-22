@@ -234,6 +234,7 @@ Thanks to all the folks who have contributed suggestions and bug reports. Thank 
 See the [[https://codeberg.org/ashton314/emacs-bedrock/issues][issue tracker]] on Codeberg.
 
 * Changelog
+
 - 2.0.0
 
   development
@@ -241,6 +242,14 @@ See the [[https://codeberg.org/ashton314/emacs-bedrock/issues][issue tracker]] o
   *Major release; new minimum supported Emacs version is 31.1.*
 
   Improve configuration for tree-sitter, Eglot, and minibuffer completions to take advantage of new features from Emacs 31.
+
+  Remove need for =:ensure t=. Reorganize and refine comments.
+
+  Remove the following packages in favor of built-in features:
+
+  + =wgrep= (use =M-x grep-change-to-grep-edit-mode= instead)
+  + =corfu-terminal= (Emacs 31 supports child frames in TTY mode)
+  + =origami= (use built-in =hideshow.el= instead)
 
 - 1.5.0
 
