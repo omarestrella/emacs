@@ -2,6 +2,11 @@
 ;;;
 ;;; Extra config: Researcher
 
+;;; NOTE: the Citar package lives on the MELPA repository; you will
+;;; need to update the `package-archives' variable in init.el before
+;;; before loading this; see the comment in init.el under "Package
+;;; initialization".
+;;;
 ;;; Usage: Append or require this file from init.el for research
 ;;; helps. If you write papers in LaTeX and need to manage your
 ;;; citations or keep track of notes, this set of packages is for you.
@@ -9,11 +14,6 @@
 ;;; Denote is a note taking package that facilitates a Zettelkasten
 ;;; method. Denote works by enforcing a particular file naming
 ;;; strategy. This makes it easy to link and tag notes.
-;;;
-;;; NOTE: the Citar package lives on the MELPA repository; you will
-;;; need to update the `package-archives' variable in init.el before
-;;; before loading this; see the comment in init.el under "Package
-;;; initialization".
 ;;;
 ;;; Highly recommended to enable this file with the UI enhancements in
 ;;; `base.el', as Citar works best with the Vertico completing-read
@@ -76,10 +76,46 @@
 ;;
 ;;     https://protesilaos.com/emacs/denote
 ;;
+;; The denote package itself provides the core of the file
+;; naming/tagging scheme. There are a handful of extra packages that
+;; provide additional utilities:
+;;
+;;  - denote-journal: create daily notes
+;;
+;;  - denote-sequence: create "folgezettle", i.e. hierarchy/sequences
+;;    of related notes
+;;
+;;  - denote-markdown: utilities to make denote work smoother with
+;;    markdown-type files
+;;
+;;  - denote-silo: create separate "silos" of notes that live in
+;;    different directories
+;;
+;; Each package is thoughtfully crafted and exceptionally
+;; well-documented, as is typical with any package written by
+;; Protesilaos "Prot" Stavrou.
+
 (use-package denote
+  :custom
+  ;; Default file type. Accepts 'text 'markdown-yaml 'markdown-toml
+  (denote-file-type 'org)
   :config
-  (denote-rename-buffer-mode)
-  (require 'denote-journal-extras))
+  (denote-rename-buffer-mode))
+
+(use-package denote-journal
+  :after denote
+  :custom
+  ;; Other good variables to configure: denote-journal-directory, denote-journal-title-format
+  (denote-journal-keyword "journal"))
+
+(use-package denote-markdown
+  :after denote)
+
+(use-package denote-sequence
+  :after denote)
+
+(use-package denote-silo
+  :after denote)
 
 ;; Integrate citar and Denote: take notes on bibliographic entries
 ;; through Denote
