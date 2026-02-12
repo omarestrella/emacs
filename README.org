@@ -244,6 +244,8 @@ See the [[https://codeberg.org/ashton314/emacs-bedrock/issues][issue tracker]] o
 
   Remove need for =:ensure t=. Reorganize and refine comments.
 
+  Add MELPA to package archive list by default so Citar installs cleanly.
+
   Remove the following packages in favor of built-in features:
 
   + =wgrep= (use =M-x grep-change-to-grep-edit-mode= instead)

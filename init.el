@@ -35,18 +35,15 @@
 
 ;; Package initialization
 ;;
-;; We'll stick to the built-in GNU and non-GNU ELPAs (Emacs Lisp Package
-;; Archive) for the base install, but there are some other ELPAs you could look
-;; at if you want more packages. MELPA in particular is very popular. See
-;; instructions at:
+;; Emacs ships with a bunch of Emacs Lisp package archives ("ELPAs")
+;; pre-configured. The MELPA archive is the biggest package archive
+;; out there. Most of the packages Bedrock uses in the extras/ folder
+;; come from the built-in ELPAs, but a few (notably Citar in
+;; extras/researcher.el) are on MELPA.
 ;;
-;;    https://melpa.org/#/getting-started
-;;
-;; You can simply uncomment the following if you'd like to get started with
-;; MELPA packages quickly:
-;;
-;; (with-eval-after-load 'package
-;;   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
+;; These lines add MELPA to the list of ELPAs that Emacs will read.
+(with-eval-after-load 'package
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
 
 ;; If you want to turn off the welcome screen, uncomment this
 ;(setopt inhibit-splash-screen t)
