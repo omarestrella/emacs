@@ -5,12 +5,6 @@ Stepping stones to a better Emacs experience
 * Synopsis
 An /extremely/ minimal Emacs starter kit that uses no external packages by default, and only GNU-ELPA packages on an opt-in basis. Intended to be copied once and then modified as the user grows in knowledge and power.
 
-As of 2024-02-07, Bedrock is officially hosted on [[https://codeberg.org/ashton314/emacs-bedrock][Codeberg]].
-
-Links of historical interest:
-- [[https://github.com/ashton314/emacs-bedrock][GitHub]] (just a place holder)
-- [[https://sr.ht/~ashton314/emacs-bedrock/][Old project on SourceHut]] (very out-of-date, do not use)
-
 *NOTICE:* Requires Emacs 31.1 or better.
 
 * Description
@@ -330,7 +324,18 @@ See the [[https://codeberg.org/ashton314/emacs-bedrock/issues][issue tracker]] o
 
   Initial “release”.
 
+* History
+
+Bedrock came about because I wanted a configuration that took advantage of modern, built-in features of Emacs. I wanted something lightweight and easy understand and modify. Mostly, I just wanted something that I could hand to a friend to get them started on Emacs.
+
+As of 2024-02-07, Bedrock is officially hosted on [[https://codeberg.org/ashton314/emacs-bedrock][Codeberg]].
+
+Links of historical interest:
+- [[https://github.com/ashton314/emacs-bedrock][GitHub]] (just a place holder)
+- [[https://sr.ht/~ashton314/emacs-bedrock/][Old project on SourceHut]] (very out-of-date, do not use)
+
 * Authors and Acknowledgements
+
 Creator and maintainer:
 
 - Ashton Wiersdorf https://lambdaland.org
