@@ -1,18 +1,18 @@
 #+title: Emacs Bedrock
 
-Stepping stones to a better Emacs experience
+A foundation for a better Emacs experience
 
 * Synopsis
-An /extremely/ minimal Emacs starter kit that uses no external packages by default, and only GNU-ELPA packages on an opt-in basis. Intended to be copied once and then modified as the user grows in knowledge and power.
+An /extremely/ minimal Emacs starter kit that uses no external packages by default. Intended to be copied once and then modified as the user grows in knowledge and power.
 
-*NOTICE:* Requires Emacs 31.1 or better.
+Requires Emacs 31.1 or newer.
 
 * Description
 This is a minimal Emacs starter kit focused on setting up built-in behaviors rather than relying on third-party packages. Here's the short of the philosophy:
 
 - Focus on using default, built-in Emacs behavior
 
-  Yes, we all love our fancy third-party packages. This starter kit focuses on what is built-in to Emacs. Why? Because there are too many good packages and picking and choosing the best is a joy we leave to the user.
+  Yes, we all love our fancy third-party packages. This starter kit focuses on what is built-in to Emacs. Why? Because there are too many good packages and picking and choosing the best is a joy we leave to the user. (/That said, we do have a curated set of some of the *best* packages Emacs has to offer that the user can try if they wish./)
 
 - Explain every customization and encourage modification
 
@@ -42,7 +42,7 @@ Emacs 29.1 added the handy =--init-directory= flag. This means that you can run 
 
 Once you're happy, you should just copy =init.el= and =early-init.el= to =~/.emacs.d/=.
 
-** Learning Emacs with Bedrock
+* Learning Emacs with Bedrock
 Bedrock doesn't try to take care of all your needs. Instead, it's here to give you enough of a head-start that you can be productive /now/ and also point you in the right direction so that you can learn to configure and extend Emacs yourself.
 
 *You should read the Bedrock source files.* There is a lot of information contained in comments that will help you customize Bedrock further to better suit your needs and preferences. Beyond reading the Bedrock source, you should also get comfortable with Emacs' built-in documentation. You should learn these commands and use them frequently as you explore:
@@ -51,6 +51,8 @@ Bedrock doesn't try to take care of all your needs. Instead, it's here to give y
 - =describe-function= (=C-h f=) Asks for a function name, and then shows you the documentation for that function.
 - =describe-variable= (=C-h v=) Similar to =describe-function=, but for variables. Use this when you want to know what a configuration option does.
 - =info-emacs-manual= (=C-h r=) Read the built-in Emacs manual. It is extensive. Use the keys =m= and =i= to access the menu for the current page and the index for the current manual, respectively.
+
+Get comfortable with these =describe-*= functions and Emacs will become legible. If you are /brand new/ to Emacs, make sure you try out the built-in tutorial by running =help-with-tutorial= (=C-h t=).
 
 * Screenshots
 What you should see on opening Emacs up with Bedrock installed: a simple splash screen, [[https://protesilaos.com/emacs/modus-themes][modus-vivendi]] active, and the =help-quick= display at the bottom.
@@ -140,7 +142,7 @@ Built-in packages that this extra configures:
 - [[https://github.com/joaotavora/eglot][Eglot]] ([[https://microsoft.github.io/language-server-protocol/][Language Server Protocol (LSP) client]])
 - Treesit ([[https://github.com/tree-sitter][Tree-Sitter]] support)
 
-Both of these packages are new in Emacs 29 and received substantial upgrades through version 31. In particular, Emacs 31 added automatic installation of tree-sitter grammars.
+Both of these packages are new in Emacs 29 and received substantial upgrades through version 31. In particular, Emacs 31 added automatic installation of tree-sitter grammars. Eglot also received substantial upgrades in Emacs 31.
 
 ** Org-mode: =extras/org.el=
 This extra configures =org-mode=. There is a /lot/ that Bedrock cannot configure out of the box—you will need to modify all variables to fit your file system and needs, as explained in comments in the file.
@@ -152,7 +154,7 @@ Packages this extra adds:
 
 If you like Vim keybindings, then this is the extra for you. It configures =evil-mode= and enables it, so you get Vim-like keybindings all throughout Emacs. I understand that this is the best Vim emulation outside of Vim itself. I use =evil-mode= in all my work.
 
-Other packages that I use personally, but are not on GNU or non-GNU ELPA and so left out of the config include:
+Other packages that I use personally include:
 
 - [[https://github.com/emacs-evil/evil-collection][Evil-Collection]] Add Evil-friendly keybindings to lots of corners of Emacs
 - [[https://github.com/cofi/evil-leader][Evil-Leader]] Setting a prefix (i.e. “leader”) key
@@ -166,8 +168,6 @@ Packages this extra includes:
 Citar provides a completing-read interface into your bibliography and can automatically insert citations in LaTeX, Markdown, and org-mode.
 
 Denote is a simple note taking system that doesn't rely on any tools except some common Unix utilities like =grep= and =find=.
-
-Citar lives in [[https://melpa.org/][Melpa]], so you will need to [[https://melpa.org/#/getting-started][add Melpa to your package-archives]].
 
 ** Writing: =extras/writer.el=
 Packages this extra adds:
@@ -238,7 +238,7 @@ See the [[https://codeberg.org/ashton314/emacs-bedrock/issues][issue tracker]] o
 
   Remove need for =:ensure t=. Reorganize and refine comments.
 
-  Add MELPA to package archive list by default so Citar installs cleanly.
+  Add MELPA to package archive list by default so Citar installs cleanly. Too good to pass up.
 
   Remove the following packages in favor of built-in features:
 
