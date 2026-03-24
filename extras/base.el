@@ -167,4 +167,4 @@
 ;; Orderless: powerful completion style
 (use-package orderless
   :config
-  (setq completion-styles '(orderless)))
+  (setq completion-styles '(orderless basic)))

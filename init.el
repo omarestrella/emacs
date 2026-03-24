@@ -51,10 +51,14 @@
 (setopt initial-major-mode 'fundamental-mode)  ; default mode for the *scratch* buffer
 (setopt display-time-default-load-average nil) ; this information is useless for most
 
-;; Automatically reread from disk if the underlying file changes
-(setopt auto-revert-avoid-polling t)
+;; Automatically reread from disk if the underlying file changes by
+;; using the OS file change notification interface rather than
+;; repeatedly polling to see if there are changes.
+;;
 ;; Some systems don't do file notifications well; see
 ;; https://todo.sr.ht/~ashton314/emacs-bedrock/11
+;; Set this to `nil' if Emacs is having trouble picking up changes.
+(setopt auto-revert-avoid-polling t)
 (setopt auto-revert-interval 5)
 (setopt auto-revert-check-vc-info t)
 (global-auto-revert-mode)
