@@ -344,6 +344,7 @@ Contributors:
 
 - Justin Koh
 - George Kettleborough
+- Bhargav Kulkarni
 - Enzo Do Rosario
 - Ed Singleton
 - Vincent Conus

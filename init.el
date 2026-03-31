@@ -15,7 +15,7 @@
 ;;;
 ;;;  - Basic settings
 ;;;  - Discovery aids
-;;;  - Minibuffer/completion settings
+;;;  - Minibuffer/completion/searching settings
 ;;;  - Interface enhancements/defaults
 ;;;  - Tab-bar configuration
 ;;;  - Theme
@@ -120,7 +120,7 @@ If the new path's directories does not exist, create them."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;;   Minibuffer/completion settings
+;;;   Minibuffer/completion/searching settings
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -154,6 +154,24 @@ If the new path's directories does not exist, create them."
 ;(icomplete-vertical-mode)
 ;(fido-vertical-mode)
 ;(setopt icomplete-delay-completions-threshold 4000)
+
+
+;; isearch is Emacs's built-in searching system
+(use-package isearch
+  :ensure nil                           ; already installed
+  :bind
+  (:map isearch-mode-map
+        ("C-." . isearch-forward-thing-at-point)) ; Search for thing under cursor
+  :custom
+  (lazy-count-prefix-format "(%s/%s) ")
+  (isearch-lazy-count t)                 ; show match count
+  (isearch-allow-motion t)
+  (isearch-allow-scroll t)               ; lets you scroll without breaking search
+  (isearch-repeat-on-direction-change t) ; C-r immediately goes to previous match
+  ;; Uncomment to automatically wrap search to top when reaching
+  ;; bottom without pausing
+  ;; (isearch-wrap-pause 'no-ding)
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -248,10 +266,10 @@ If the new path's directories does not exist, create them."
 
 ;; UI/UX enhancements mostly focused on minibuffer and autocompletion interfaces
 ;; These ones are *strongly* recommended!
-;(load-file (expand-file-name "extras/base.el" user-emacs-directory))
+(load-file (expand-file-name "extras/base.el" user-emacs-directory))
 
 ;; Packages for software development
-;(load-file (expand-file-name "extras/dev.el" user-emacs-directory))
+(load-file (expand-file-name "extras/dev.el" user-emacs-directory))
 
 ;; Vim-bindings in Emacs (evil-mode configuration)
 ;(load-file (expand-file-name "extras/vim-like.el" user-emacs-directory))
@@ -280,7 +298,7 @@ If the new path's directories does not exist, create them."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages '(which-key)))
+ '(package-selected-packages '(citar-typst which-key)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
