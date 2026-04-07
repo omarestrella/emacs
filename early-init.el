@@ -24,7 +24,7 @@
 (setq native-comp-async-report-warnings-errors 'silent)
 
 ;; Silence stupid startup message
-(setq inhibit-startup-echo-area-message (user-login-name))
+(advice-add #'display-startup-echo-area-message :override #'ignore)
 
 ;; Tell use-package to install if missing by default
 ;; Use `:ensure nil' in packages you *don't* want to install
