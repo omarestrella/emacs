@@ -67,8 +67,20 @@
 ;; recently-used selections sorted first
 (savehist-mode)
 
+;; Save existing clipboard content to the kill ring---useful if you've
+;; copied something from an external program and then kill some text
+;; in Emacs shortly after. Also, deduplicate kill ring contents.
+(setopt save-interprogram-paste-before-kill t)
+(setopt kill-do-not-save-duplicates t)
+
+;; Don't ping url-looking things when running find-file
+(setopt ffap-machine-p-known 'reject)
+
 ;; Move through windows with Ctrl-<arrow keys>
 (windmove-default-keybindings 'control) ; You can use other modifiers here
+
+;; Rebalance windows automatically when splitting
+(setopt window-combination-resize t)
 
 ;; Fix archaic defaults; justification: https://practicaltypography.com/one-space-between-sentences.html
 (setopt sentence-end-double-space nil)
@@ -102,6 +114,18 @@ If the new path's directories does not exist, create them."
 ;;
 ;; (let ((backup-dir (expand-file-name "emacs-backup/" user-emacs-directory)))
 ;;   (setopt backup-directory-alist `(("." . ,backup-dir))))
+
+;; Basic speedups
+;;
+;; Emacs works really hard to be incredibly compatible out-of-the-box
+;; with a wide variety of languages. That comes at the cost of a little performance.
+
+;; These tell Emacs to assume left-to-right text everywhere.
+;; Remove/comment if you read right-to-left languages (Arabic, Hebrew, etc.)
+(setq-default bidi-display-reordering 'left-to-right
+              bidi-paragraph-direction 'left-to-right)
+(setq bidi-inhibit-bpa t)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -207,6 +231,7 @@ If the new path's directories does not exist, create them."
 (cua-mode)
 
 ;; Makes it easier to repeat commands; `C-x o C-x o' becomes `C-x o o'
+;; See https://karthinks.com/software/it-bears-repeating/
 (repeat-mode)
 
 ;; Display line numbers in programming mode
