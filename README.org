@@ -54,6 +54,15 @@ Bedrock doesn't try to take care of all your needs. Instead, it's here to give y
 
 Get comfortable with these =describe-*= functions and Emacs will become legible. If you are /brand new/ to Emacs, make sure you try out the built-in tutorial by running =help-with-tutorial= (=C-h t=).
 
+** Other resources
+
+There are /way/ too many blogs and resources to list here. Lots of people use Emacs, and fortunately, a lot of them like writing about it! Here's a /very small/ selection of some good resources as you get deeper. It's not comprehensive by any means, but hopefully it helps you get your feet wet.
+
+ - [[https://emacsredux.com/][Emacs Redux]] by Bozhidar Batsov (blog)
+ - [[https://www.masteringemacs.org/][Mastering Emacs]] by Mickey Petersen (book & blog)
+ - [[https://systemcrafters.net/][System Crafters]]
+
+
 * Screenshots
 What you should see on opening Emacs up with Bedrock installed: a simple splash screen, [[https://protesilaos.com/emacs/modus-themes][modus-vivendi]] active, and the =help-quick= display at the bottom.
 
