@@ -118,12 +118,11 @@ If the new path's directories does not exist, create them."
 ;; Basic speedups
 ;;
 ;; Emacs works really hard to be incredibly compatible out-of-the-box
-;; with a wide variety of languages. That comes at the cost of a little performance.
-
-;; These tell Emacs to assume left-to-right text everywhere.
+;; with a wide variety of languages. That comes at the cost of a
+;; little performance. These tell Emacs to assume left-to-right text
+;; in all buffers.
 ;; Remove/comment if you read right-to-left languages (Arabic, Hebrew, etc.)
-(setq-default bidi-display-reordering 'left-to-right
-              bidi-paragraph-direction 'left-to-right)
+(setq-default bidi-paragraph-direction 'left-to-right)
 (setq bidi-inhibit-bpa t)
 
 
