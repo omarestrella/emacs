@@ -328,6 +328,10 @@ If the new path's directories does not exist, create them."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+
+ ;; This sets the default font for Emacs. Height is in 1/10 pt; configure as desired.
+ ;; The example font listed here, Iosevka Output, is available here: https://codeberg.org/ashton314/iosevka-output
+ ;; '(default ((t (:weight normal :height 130 :width expanded :family "Iosevka Output"))))
  )
 
 (setq gc-cons-threshold (or bedrock--initial-gc-threshold 800000))

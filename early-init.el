@@ -30,10 +30,14 @@
 ;; Use `:ensure nil' in packages you *don't* want to install
 (setq use-package-always-ensure t)
 
-;; Default frame configuration: full screen, good-looking title bar on macOS
+;; Setting *-resize-pixelwise to `t' lets frames/windows resize
+;; smoothly at sub-character increments
 (setq frame-resize-pixelwise t)
-(when (display-graphic-p)   ; When in a GUI, disable tool bar. Also, prevent error on terminal.
-  (tool-bar-mode -1))       ; All these tools are in the menu-bar anyway
+; (setq window-resize-pixelwise t)
+
+(when (display-graphic-p)   ; When in a GUI, disable tool bar;
+  (tool-bar-mode -1))       ; all these tools are in the menu-bar anyway
+
 (setq default-frame-alist '((fullscreen . maximized)
 
                             ;; You can turn off scroll bars by uncommenting these lines:
