@@ -82,6 +82,11 @@
 ;; Rebalance windows automatically when splitting
 (setopt window-combination-resize t)
 
+;; Prefer horizontal split on landscape monitors: `longest' is
+;; default; can be `vertical' or `horizontal'.
+;; See also the variable `split-width-threshold'.
+(setopt split-window-preferred-direction 'longest)
+
 ;; Fix archaic defaults; justification: https://practicaltypography.com/one-space-between-sentences.html
 (setopt sentence-end-double-space nil)
 
@@ -290,10 +295,10 @@ If the new path's directories does not exist, create them."
 
 ;; UI/UX enhancements mostly focused on minibuffer and autocompletion interfaces
 ;; These ones are *strongly* recommended!
-(load-file (expand-file-name "extras/base.el" user-emacs-directory))
+;(load-file (expand-file-name "extras/base.el" user-emacs-directory))
 
 ;; Packages for software development
-(load-file (expand-file-name "extras/dev.el" user-emacs-directory))
+;(load-file (expand-file-name "extras/dev.el" user-emacs-directory))
 
 ;; Vim-bindings in Emacs (evil-mode configuration)
 ;(load-file (expand-file-name "extras/vim-like.el" user-emacs-directory))
