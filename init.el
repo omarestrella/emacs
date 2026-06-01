@@ -95,8 +95,9 @@
 ;; potentially dangerous. Commented out to keep the safer behavior.
 ; (setopt use-short-answers t)
 
-;; Make right-click do something sensible
+;; Make right-click do something sensible and shift-drag behave better
 (when (display-graphic-p)
+  (mouse-shift-adjust-mode)
   (context-menu-mode))
 
 ;; Don't litter file system with *~ backup files; put them all inside
