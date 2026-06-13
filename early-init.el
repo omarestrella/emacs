@@ -27,7 +27,11 @@
 
 ;; Default frame configuration: full screen, good-looking title bar on macOS
 (setq frame-resize-pixelwise t)
-(tool-bar-mode -1)                      ; All these tools are in the menu-bar anyway
+; (setq window-resize-pixelwise t)
+
+(when (boundp 'tool-bar-mode) ; When in a GUI, disable tool bar;
+  (tool-bar-mode -1))        ; all these tools are in the menu-bar anyway
+
 (setq default-frame-alist '((fullscreen . maximized)
 
                             ;; You can turn off scroll bars by uncommenting these lines:
