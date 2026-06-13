@@ -88,7 +88,14 @@
 
   ;; After invoking avy-goto-char-timer, hit "." to run embark at the next
   ;; candidate you select
-  (setf (alist-get ?. avy-dispatch-alist) 'bedrock/avy-action-embark))
+  (setf (alist-get ?. avy-dispatch-alist) 'bedrock/avy-action-embark)
+
+  :config
+  ;; Replace which-key-mode with a completing-read menu that does
+  ;; approximately the same thing
+  (which-key-mode -1)
+  (setopt embark-auto-prefix-help-delay 1.0)
+  (embark-auto-prefix-help-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
