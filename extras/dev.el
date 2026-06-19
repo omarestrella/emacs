@@ -38,7 +38,7 @@
   (setopt treesit-enabled-modes t)
 
   ;; Amount to highlight: integer between 1-4; 4 is max highlighting
-  (setopt treesit-font-lock-level 4)
+  (setopt treesit-font-lock-level 3)
 
   ;; What to do if language grammar not installed: default is `ask';
   ;; other options are `always', and `ask-dir'.
