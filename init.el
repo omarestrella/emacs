@@ -140,6 +140,7 @@ If the new path's directories does not exist, create them."
 
 ;; Show the help buffer after startup---makes it a little bit like nano
 (add-hook 'after-init-hook 'help-quick)
+(setopt view-lossage-auto-refresh t)
 
 ;; which-key: shows a popup of available keybindings when typing a long key
 ;; sequence (e.g. C-x ...)
@@ -161,6 +162,7 @@ If the new path's directories does not exist, create them."
 (setopt tab-always-indent 'complete)                   ; When I hit TAB, try to complete, otherwise, indent
 (setopt completion-styles '(basic initials substring)) ; Different styles to match input to candidates
 
+(setopt minibuffer-visible-completions t)              ; Use ↑↓ to select candidates
 (setopt completion-auto-help 'always)                  ; Open completion always; `lazy' another option
 (setopt completions-max-height 20)                     ; This is an arbitrary value
 (setopt completions-format 'one-column)                ; Makes it easier to scroll
@@ -222,6 +224,8 @@ If the new path's directories does not exist, create them."
 ;; Enable horizontal scrolling
 (setopt mouse-wheel-tilt-scroll t)
 (setopt mouse-wheel-flip-direction t)
+
+(setopt xterm-update-cursor t)
 
 ;; These are too personal to prescribe a default; uncomment and
 ;; configure according to your tastes

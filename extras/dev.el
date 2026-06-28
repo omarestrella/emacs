@@ -32,6 +32,10 @@
 
 (use-package emacs
   :config
+  ;; Code folding config
+  ;(setopt hs-show-indicators t)         ; Show collapse indicators in margin
+
+
   ;; Treesitter config
 
   ;; Enable tree-sitter in all available modes
