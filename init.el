@@ -82,6 +82,10 @@
 ;; Rebalance windows automatically when splitting
 (setopt window-combination-resize t)
 
+;; On macOS, make the first click raise the window but don't
+;; reposition the cursor to where the click happened.
+(setopt ns-click-through nil)
+
 ;; Prefer horizontal split on landscape monitors: `longest' is
 ;; default; can be `vertical' or `horizontal'.
 ;; See also the variable `split-width-threshold'.
@@ -225,6 +229,8 @@ If the new path's directories does not exist, create them."
 (setopt mouse-wheel-tilt-scroll t)
 (setopt mouse-wheel-flip-direction t)
 
+;; Update the cursor shape inside a terminal; e.g. when in insert mode
+;; when using Evil (Vim emulation) change the cursor to a bar.
 (setopt xterm-update-cursor t)
 
 ;; These are too personal to prescribe a default; uncomment and

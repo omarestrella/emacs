@@ -34,6 +34,7 @@
   :config
   ;; Code folding config
   ;(setopt hs-show-indicators t)         ; Show collapse indicators in margin
+  ;(setopt hs-display-lines-hidden t)    ; Show number of collapsed lines
 
 
   ;; Treesitter config
