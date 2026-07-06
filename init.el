@@ -203,9 +203,7 @@ If the new path's directories does not exist, create them."
   (isearch-allow-motion t)
   (isearch-allow-scroll t)               ; lets you scroll without breaking search
   (isearch-repeat-on-direction-change t) ; C-r immediately goes to previous match
-  ;; Uncomment to automatically wrap search to top when reaching
-  ;; bottom without pausing
-  ;; (isearch-wrap-pause 'no-ding)
+  (isearch-wrap-pause 'no-ding)          ; Automatically wrap search to top
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
