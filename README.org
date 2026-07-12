@@ -79,8 +79,6 @@ Basic code editing: line numbers and =hl-line-mode=.
 #+caption: Which key package in motion
 [[file:screenshots/which_key.gif]]
 
-[[file:screenshots/which_key.mov][Movie of =which-key= in motion]]
-
 Basic completion: hit =TAB= twice to pull up the =*Completions*= buffer, then =TAB= once again to automatically put the cursor into that buffer. (Configurable to pull up and auto-select faster, of course, but this behaves closer to the stock Emacs experience.)
 
 #+caption: Still from the built-in completion interface, new with Emacs 29.1
@@ -91,8 +89,6 @@ Basic completion interface in action.
 #+caption: GIF of the completion interface in action
 [[file:screenshots/basic_completion.gif]]
 
-[[file:screenshots/basic_completion.mov][Movie of the completion interface in action]]
-
 A bunch of bells and whistles:
 
 - Vertico completion framework enabled (=base.el= extra)
@@ -100,7 +96,8 @@ A bunch of bells and whistles:
 - Corfu completion-at-point enabled (=base.el= extra)
 - Smooth scrolling (enabled by default)
 
-[[file:screenshots/everything_demo.mov][Movie of all the bells and whistles turned on]]
+#+caption: A bunch of the bells and whistles turned on
+[[file:screenshots/everything_demo.gif]]
 
 * Extras
 For those who'd like a little more help in tailoring Emacs for specific purposes, the =extras/= folder contains a few Emacs Lisp files with example configurations for various packages. You can copy just the config you want into =init.el= or include them wholesale via =(load-file "~/.emacs.d/extras/file-name.el")=.
