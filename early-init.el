@@ -38,15 +38,24 @@
 (when (boundp 'tool-bar-mode) ; When in a GUI, disable tool bar;
   (tool-bar-mode -1))        ; all these tools are in the menu-bar anyway
 
-(setq default-frame-alist '((fullscreen . maximized)
-
+;; These settings apply to *all* frames.
+(setq default-frame-alist '(
                             ;; You can turn off scroll bars by uncommenting these lines:
                             ;; (vertical-scroll-bars . nil)
                             ;; (horizontal-scroll-bars . nil)
+                            (ns-appearance . dark)
+                            (ns-transparent-titlebar . t)
 
+                            ;; Use this to turn off the OS window decoration
+                            ;; (undecorated-round . t)
+                            ;; (internal-border-width . 3)
+                            ))
+
+;; These settings apply to the first frame created. The
+;; (back|fore)ground-color settings need to live here so that a
+;; theme's background color applies correctly to subsequent frames.
+(setq initial-frame-alist '((fullscreen . maximized)
                             ;; Setting the face in here prevents flashes of
                             ;; color as the theme gets activated
                             (background-color . "#000000")
-                            (foreground-color . "#ffffff")
-                            (ns-appearance . dark)
-                            (ns-transparent-titlebar . t)))
+                            (foreground-color . "#ffffff")))
