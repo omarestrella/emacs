@@ -239,6 +239,9 @@ If the new path's directories does not exist, create them."
 ;; Misc. UI tweaks
 (blink-cursor-mode -1)                                ; Steady cursor
 (pixel-scroll-precision-mode)                         ; Smooth scrolling
+;; If you use a mouse and scrolling seems a little jittery, you might
+;; want to set this to `nil':
+;(setopt pixel-scroll-precision-interpolate-mice nil)
 
 ;; Use common keystrokes by default
 (cua-mode)
