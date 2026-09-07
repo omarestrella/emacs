@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+;;;
 ;;; Emacs Bedrock
 ;;;
 ;;; Extra config: Writer
@@ -41,7 +43,6 @@
 
 ;; Jinx: Enchanted spell-checking
 (use-package jinx
-  :ensure t
   :hook (((text-mode prog-mode) . jinx-mode))
   :bind (("C-;" . jinx-correct))
   :custom
@@ -65,7 +66,6 @@
 
 ;; Olivetti: Set the window margins so your text is centered
 (use-package olivetti
-  :ensure t
   ;; Uncomment below to make olivetti-mode turn on automatically in certain modes
   ; :hook ((markdown-mode . olivetti-mode))
   )

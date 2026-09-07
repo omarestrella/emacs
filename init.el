@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t -*-
 ;;;  ________                                                _______                 __                            __
 ;;; /        |                                              /       \               /  |                          /  |
 ;;; $$$$$$$$/ _____  ____   ______   _______  _______       $$$$$$$  | ______   ____$$ | ______   ______   _______$$ |   __
@@ -14,7 +15,7 @@
 ;;;
 ;;;  - Basic settings
 ;;;  - Discovery aids
-;;;  - Minibuffer/completion settings
+;;;  - Minibuffer/completion/searching settings
 ;;;  - Interface enhancements/defaults
 ;;;  - Tab-bar configuration
 ;;;  - Theme
@@ -23,8 +24,8 @@
 
 ;;; Guardrail
 
-(when (< emacs-major-version 29)
-  (error "Emacs Bedrock only works with Emacs 29 and newer; you have version %s" emacs-major-version))
+(when (< emacs-major-version 31)
+  (error "Emacs Bedrock only works with Emacs 31 and newer; you have version %s" emacs-major-version))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -34,18 +35,15 @@
 
 ;; Package initialization
 ;;
-;; We'll stick to the built-in GNU and non-GNU ELPAs (Emacs Lisp Package
-;; Archive) for the base install, but there are some other ELPAs you could look
-;; at if you want more packages. MELPA in particular is very popular. See
-;; instructions at:
+;; Emacs ships with a bunch of Emacs Lisp package archives ("ELPAs")
+;; pre-configured. The MELPA archive is the biggest package archive
+;; out there. Most of the packages Bedrock uses in the extras/ folder
+;; come from the built-in ELPAs, but a few (notably Citar in
+;; extras/researcher.el) are on MELPA.
 ;;
-;;    https://melpa.org/#/getting-started
-;;
-;; You can simply uncomment the following if you'd like to get started with
-;; MELPA packages quickly:
-;;
-;; (with-eval-after-load 'package
-;;   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
+;; These lines add MELPA to the list of ELPAs that Emacs will read.
+(with-eval-after-load 'package
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
 
 ;; If you want to turn off the welcome screen, uncomment this
 ;(setopt inhibit-splash-screen t)
@@ -53,25 +51,57 @@
 (setopt initial-major-mode 'fundamental-mode)  ; default mode for the *scratch* buffer
 (setopt display-time-default-load-average nil) ; this information is useless for most
 
-;; Automatically reread from disk if the underlying file changes
-(setopt auto-revert-avoid-polling t)
+;; Automatically reread from disk if the underlying file changes by
+;; using the OS file change notification interface rather than
+;; repeatedly polling to see if there are changes.
+;;
 ;; Some systems don't do file notifications well; see
 ;; https://todo.sr.ht/~ashton314/emacs-bedrock/11
+;; Set this to `nil' if Emacs is having trouble picking up changes.
+(setopt auto-revert-avoid-polling t)
 (setopt auto-revert-interval 5)
 (setopt auto-revert-check-vc-info t)
 (global-auto-revert-mode)
 
-;; Save history of minibuffer
+;; Save history of minibuffer: future invocations will have
+;; recently-used selections sorted first
 (savehist-mode)
+
+;; Save existing clipboard content to the kill ring---useful if you've
+;; copied something from an external program and then kill some text
+;; in Emacs shortly after. Also, deduplicate kill ring contents.
+(setopt save-interprogram-paste-before-kill t)
+(setopt kill-do-not-save-duplicates t)
+
+;; Don't ping url-looking things when running find-file
+(setopt ffap-machine-p-known 'reject)
 
 ;; Move through windows with Ctrl-<arrow keys>
 (windmove-default-keybindings 'control) ; You can use other modifiers here
 
-;; Fix archaic defaults
+;; Rebalance windows automatically when splitting
+(setopt window-combination-resize t)
+
+;; On macOS, make the first click raise the window but don't
+;; reposition the cursor to where the click happened.
+(setopt ns-click-through nil)
+
+;; Prefer horizontal split on landscape monitors: `longest' is
+;; default; can be `vertical' or `horizontal'.
+;; See also the variable `split-width-threshold'.
+(setopt split-window-preferred-direction 'longest)
+
+;; Fix archaic defaults; justification: https://practicaltypography.com/one-space-between-sentences.html
 (setopt sentence-end-double-space nil)
 
-;; Make right-click do something sensible
+;; Make all confirmation prompts use `y' or `n'. Default is for some
+;; prompts to ask for a full `yes' or `no' when the operation is
+;; potentially dangerous. Commented out to keep the safer behavior.
+; (setopt use-short-answers t)
+
+;; Make right-click do something sensible and shift-drag behave better
 (when (display-graphic-p)
+  (mouse-shift-adjust-mode)
   (context-menu-mode))
 
 ;; Don't litter file system with *~ backup files; put them all inside
@@ -95,25 +125,36 @@ If the new path's directories does not exist, create them."
 ;; (let ((backup-dir (expand-file-name "emacs-backup/" user-emacs-directory)))
 ;;   (setopt backup-directory-alist `(("." . ,backup-dir))))
 
+;; Basic speedups
+;;
+;; Emacs works really hard to be incredibly compatible out-of-the-box
+;; with a wide variety of languages. That comes at the cost of a
+;; little performance. These tell Emacs to assume left-to-right text
+;; in all buffers.
+;; Remove/comment if you read right-to-left languages (Arabic, Hebrew, etc.)
+(setq-default bidi-paragraph-direction 'left-to-right)
+(setq bidi-inhibit-bpa t)
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;;   Discovery aids
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Show the help buffer after startup
+;; Show the help buffer after startup---makes it a little bit like nano
 (add-hook 'after-init-hook 'help-quick)
+(setopt view-lossage-auto-refresh t)
 
 ;; which-key: shows a popup of available keybindings when typing a long key
 ;; sequence (e.g. C-x ...)
 (use-package which-key
-  :ensure t
   :config
   (which-key-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;;   Minibuffer/completion settings
+;;;   Minibuffer/completion/searching settings
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -125,12 +166,20 @@ If the new path's directories does not exist, create them."
 (setopt tab-always-indent 'complete)                   ; When I hit TAB, try to complete, otherwise, indent
 (setopt completion-styles '(basic initials substring)) ; Different styles to match input to candidates
 
+(setopt minibuffer-visible-completions t)              ; Use ↑↓ to select candidates
 (setopt completion-auto-help 'always)                  ; Open completion always; `lazy' another option
-(setopt completions-max-height 20)                     ; This is arbitrary
-(setopt completions-format 'one-column)
+(setopt completions-max-height 20)                     ; This is an arbitrary value
+(setopt completions-format 'one-column)                ; Makes it easier to scroll
 (setopt completions-group t)
+
+;; Eager completion setup: show *Completions* buffer immediately
 (setopt completion-auto-select 'second-tab)            ; Much more eager
-;(setopt completion-auto-select t)                     ; See `C-h v completion-auto-select' for more possible values
+(setopt completion-eager-display t)                    ; Show the completions buffer immediately
+(setopt completion-eager-update t)                     ; Update display as-you-type
+
+;; Uncomment to get automatic inline completion previews
+;(completion-preview-mode)
+
 
 (keymap-set minibuffer-mode-map "TAB" 'minibuffer-complete) ; TAB acts more like how it does in the shell
 
@@ -141,6 +190,22 @@ If the new path's directories does not exist, create them."
 ;(fido-vertical-mode)
 ;(setopt icomplete-delay-completions-threshold 4000)
 
+
+;; isearch is Emacs's built-in searching system
+(use-package isearch
+  :ensure nil                           ; already installed
+  :bind
+  (:map isearch-mode-map
+        ("C-." . isearch-forward-thing-at-point)) ; Search for thing under cursor
+  :custom
+  (lazy-count-prefix-format "(%s/%s) ")
+  (isearch-lazy-count t)                 ; show match count
+  (isearch-allow-motion t)
+  (isearch-allow-scroll t)               ; lets you scroll without breaking search
+  (isearch-repeat-on-direction-change t) ; C-r immediately goes to previous match
+  (isearch-wrap-pause 'no-ding)          ; Automatically wrap search to top
+  )
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;;   Interface enhancements/defaults
@@ -150,6 +215,7 @@ If the new path's directories does not exist, create them."
 ;; Mode line information
 (setopt line-number-mode t)                        ; Show current line in modeline
 (setopt column-number-mode t)                      ; Show column as well
+(setopt mode-line-collapse-minor-modes nil)        ; nil default; set to `t' to hide minor modes
 
 (setopt x-underline-at-descent-line nil)           ; Prettier underlines
 (setopt switch-to-buffer-obey-display-actions t)   ; Make switching buffers more consistent
@@ -161,21 +227,28 @@ If the new path's directories does not exist, create them."
 (setopt mouse-wheel-tilt-scroll t)
 (setopt mouse-wheel-flip-direction t)
 
-;; We won't set these, but they're good to know about
-;;
-;; (setopt indent-tabs-mode nil)
-;; (setopt tab-width 4)
+;; Update the cursor shape inside a terminal; e.g. when in insert mode
+;; when using Evil (Vim emulation) change the cursor to a bar.
+(setopt xterm-update-cursor t)
+
+;; These are too personal to prescribe a default; uncomment and
+;; configure according to your tastes
+;(setopt indent-tabs-mode nil) ; Only use spaces to perform indentation
+;(setopt tab-width 4)
 
 ;; Misc. UI tweaks
 (blink-cursor-mode -1)                                ; Steady cursor
 (pixel-scroll-precision-mode)                         ; Smooth scrolling
+;; If you use a mouse and scrolling seems a little jittery, you might
+;; want to set this to `nil':
+;(setopt pixel-scroll-precision-interpolate-mice nil)
 
 ;; Use common keystrokes by default
 (cua-mode)
 
-;; For terminal users, make the mouse more useful
-
-(xterm-mouse-mode 1)
+;; Makes it easier to repeat commands; `C-x o C-x o' becomes `C-x o o'
+;; See https://karthinks.com/software/it-bears-repeating/
+(repeat-mode)
 
 ;; Display line numbers in programming mode
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
@@ -184,9 +257,18 @@ If the new path's directories does not exist, create them."
 ;; Nice line wrapping when working with text
 (add-hook 'text-mode-hook 'visual-line-mode)
 
-;; Modes to highlight the current line with
-(let ((hl-line-hooks '(text-mode-hook prog-mode-hook)))
-  (mapc (lambda (hook) (add-hook hook 'hl-line-mode)) hl-line-hooks))
+(setopt global-hl-line-sticky-flag 'window) ; Every window gets own hl-line instance
+(global-hl-line-mode)
+
+;; Use this to enable the line highlight in only certain modes:
+;(let ((hl-line-hooks '(text-mode-hook prog-mode-hook)))
+;  (mapc (lambda (hook) (add-hook hook 'hl-line-mode)) hl-line-hooks))
+
+;; Show matching delimiters
+(setopt show-paren-delay 0)
+(setopt show-paren-mode t)
+(setopt show-paren-style 'expression)   ; default is 'parenthesis and just does delimiters
+(setopt show-paren-context-when-offscreen 'overlay)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -203,6 +285,29 @@ If the new path's directories does not exist, create them."
 (setopt display-time-format "%a %F %T")
 (setopt display-time-interval 1)
 (display-time-mode)
+
+;; A transient menu to make working with the tab-bar easier
+;; The `transient' library is built-in and makes defining little menus
+;; easy to work with. Activate this menu with `C-c C-t'.
+(use-package transient
+  :ensure nil                           ; built-in
+  :config
+  ;; You can define as many of these as you like
+  (transient-define-prefix tab-bar-transient ()
+    "Tab-bar menu"
+    [["Creation"
+      ("t" "new tab" tab-bar-new-tab)
+      ("n" "next command in new tab" other-tab-prefix)]
+     ["Movement"
+      ("j" "jump to tab" tab-switch)
+      ("h" "move left" tab-bar-move-tab-backward :transient t)
+      ("l" "move right" tab-bar-move-tab :transient t)]]
+    [["Management"
+      ("r" "rename tab" tab-rename)]]
+    [[""
+      ("RET" "Done" transient-quit-one)]])
+  :bind (:map global-map
+              ("C-c C-t" . tab-bar-transient)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -257,12 +362,16 @@ If the new path's directories does not exist, create them."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages '(which-key)))
+ '(package-selected-packages '(citar-typst which-key)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+
+ ;; This sets the default font for Emacs. Height is in 1/10 pt; configure as desired.
+ ;; The example font listed here, Iosevka Output, is available here: https://codeberg.org/ashton314/iosevka-output
+ ;; '(default ((t (:weight normal :height 130 :width expanded :family "Iosevka Output"))))
  )
 
 (setq gc-cons-threshold (or bedrock--initial-gc-threshold 800000))

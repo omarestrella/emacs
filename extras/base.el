@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+;;;
 ;;; Emacs Bedrock
 ;;;
 ;;; Extra config: Base enhancements
@@ -29,10 +31,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package avy
-  :ensure t
   :demand t
   :bind (("C-c j" . avy-goto-line)
-         ("s-j"   . avy-goto-char-timer)))
+         ("s-j"   . avy-goto-char-timer)
+	 :map isearch-mode-map
+	 ("s-j" . avy-isearch)		; Jump to highlighted isearch candidate
+	 ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -42,7 +46,6 @@
 
 ;; Consult: Misc. enhanced commands
 (use-package consult
-  :ensure t
   :bind (
          ;; Drop-in replacements
          ("C-x b" . consult-buffer)     ; orig. switch-to-buffer
@@ -64,13 +67,11 @@
   ;; Narrowing lets you restrict results to certain groups of candidates
   (setq consult-narrow-key "<"))
 
-(use-package embark-consult
-  :ensure t)
+(use-package embark-consult)
 
 ;; Embark: supercharged context-dependent menu; kinda like a
 ;; super-charged right-click.
 (use-package embark
-  :ensure t
   :demand t
   :after (avy embark-consult)
   :bind (("C-c a" . embark-act))        ; bind this to an easy key to hit
@@ -87,7 +88,14 @@
 
   ;; After invoking avy-goto-char-timer, hit "." to run embark at the next
   ;; candidate you select
-  (setf (alist-get ?. avy-dispatch-alist) 'bedrock/avy-action-embark))
+  (setf (alist-get ?. avy-dispatch-alist) 'bedrock/avy-action-embark)
+
+  :config
+  ;; Replace which-key-mode with a completing-read menu that does
+  ;; approximately the same thing
+  (which-key-mode -1)
+  (setopt embark-auto-prefix-help-delay 1.0)
+  (embark-auto-prefix-help-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -97,7 +105,6 @@
 
 ;; Vertico: better vertical completion for minibuffer commands
 (use-package vertico
-  :ensure t
   :init
   ;; You'll want to make sure that e.g. fido-mode isn't enabled
   (vertico-mode))
@@ -110,13 +117,11 @@
 
 ;; Marginalia: annotations for minibuffer
 (use-package marginalia
-  :ensure t
   :config
   (marginalia-mode))
 
 ;; Corfu: Popup completion-at-point
 (use-package corfu
-  :ensure t
   :init
   (global-corfu-mode)
   :bind
@@ -136,17 +141,9 @@
   :config
   (corfu-popupinfo-mode))
 
-;; Make corfu popup come up in terminal overlay
-(use-package corfu-terminal
-  :if (not (display-graphic-p))
-  :ensure t
-  :config
-  (corfu-terminal-mode))
-
 ;; Fancy completion-at-point functions; there's too much in the cape package to
 ;; configure here; dive in when you're comfortable!
 (use-package cape
-  :ensure t
   :init
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
   (add-to-list 'completion-at-point-functions #'cape-file))
@@ -154,7 +151,6 @@
 ;; Pretty icons for corfu
 (use-package kind-icon
   :if (display-graphic-p)
-  :ensure t
   :after corfu
   :config
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
@@ -169,7 +165,6 @@
 
 ;; Eat: Emulate A Terminal
 (use-package eat
-  :ensure t
   :custom
   (eat-term-name "xterm")
   :config
@@ -178,18 +173,5 @@
 
 ;; Orderless: powerful completion style
 (use-package orderless
-  :ensure t
   :config
-  (setq completion-styles '(orderless)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;
-;;;   Misc. editing enhancements
-;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; Modify search results en masse
-(use-package wgrep
-  :ensure t
-  :config
-  (setq wgrep-auto-save-buffer t))
+  (setq completion-styles '(orderless basic)))
