@@ -7,6 +7,8 @@ An /extremely/ minimal Emacs starter kit that uses no external packages by defau
 
 Requires Emacs 31.1 or newer.
 
+If you have Emacs 29–30, you can use [[https://codeberg.org/ashton314/emacs-bedrock/src/commit/8dac13ac15f534d0b3052db58ab5ebe2b4084b66][version 1.5.0]] instead.
+
 * Description
 This is a minimal Emacs starter kit focused on setting up built-in behaviors rather than relying on third-party packages. Here's the short of the philosophy:
 
@@ -234,9 +236,11 @@ See the [[https://codeberg.org/ashton314/emacs-bedrock/issues][issue tracker]] o
 
 * Changelog
 
-- 2.0.0
+- 2.0.1
 
-  development
+  Fix issue with turning off =tool-bar-mode=.
+
+- 2.0.0
 
   *Major release; new minimum supported Emacs version is 31.1.*
 
@@ -354,8 +358,9 @@ Contributors:
 - Enzo Do Rosario
 - Ed Singleton
 - Vincent Conus
+- tonyatoms
 
-Many thanks to everyone else who has contributed in some way through online discussions or emails.
+Many thanks to everyone else who has contributed in some way through online discussions, bug reports, or emails.
 
 * Footnotes
 
