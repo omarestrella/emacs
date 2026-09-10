@@ -1,0 +1,331 @@
+;;; -*- lexical-binding: t -*-
+;;;
+;;; Emacs Bedrock — IDE layer
+;;;
+;;; Doom/Spacemacs-style enhancements: SPC leader with which-key panel,
+;;; projects, treemacs file tree, ghostel (libghostty) terminal, LSP.
+;;;
+;;; Requires extras/base.el, extras/dev.el, and extras/vim-like.el to be
+;;; loaded first (this file is loaded last from init.el).
+
+;;; Contents:
+;;;
+;;;  - Environment (exec-path for GUI launches)
+;;;  - Evil adjustments
+;;;  - Which-key command panel
+;;;  - SPC leader (general.el)
+;;;  - Treemacs file tree
+;;;  - Ghostel terminal
+;;;  - Eglot LSP for Go, Rust, TypeScript
+;;;  - Font
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;;   Environment
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Emacs.app launched from the Dock gets a minimal launchd PATH; make sure
+;; Homebrew, cargo, and local bins are visible to eglot/treemacs/etc.
+(defun bedrock-ide/add-exec-path (dir)
+  "Add DIR to `exec-path' and the PATH environment variable if it exists."
+  (when (and (file-directory-p dir)
+             (not (member dir exec-path)))
+    (add-to-list 'exec-path dir)
+    (setenv "PATH" (concat dir path-separator (getenv "PATH")))))
+
+(mapc #'bedrock-ide/add-exec-path
+      (list "/opt/homebrew/bin"
+            "/usr/local/bin"
+            (expand-file-name "~/.cargo/bin")
+            (expand-file-name "~/.local/bin")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;;   Evil adjustments
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; CUA's C-c/C-v region behavior fights evil's visual state; evil users
+;; paste with `p' and yank with `y' instead.
+(cua-mode -1)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;;   Which-key command panel
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; base.el swaps which-key for embark-auto-prefix-help; restore which-key so
+;; the leader key gets the familiar Doom-style popup panel of shortcuts.
+(when (fboundp 'embark-auto-prefix-help-mode)
+  (embark-auto-prefix-help-mode -1))
+
+(use-package which-key
+  :custom
+  (which-key-idle-delay 0.3)
+  (which-key-idle-secondary-delay 0.05)
+  (which-key-show-early-on-C-h t)
+  ;; Doom-style bottom panel: force a multi-row grid with breathing room
+  ;; instead of one long line
+  (which-key-popup-type 'side-window)
+  (which-key-side-window-location 'bottom)
+  (which-key-side-window-max-height 0.35)
+  (which-key-min-display-lines 6)
+  (which-key-max-display-columns 4)
+  (which-key-add-column-padding 2)
+  (which-key-max-description-length 32)
+  :config
+  (which-key-mode 1))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;;   SPC leader
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package general
+  :config
+  (general-create-definer bedrock-ide/leader
+    :states '(normal visual motion)
+    :keymaps 'override
+    :prefix "SPC"
+    :non-normal-prefix "M-SPC")
+
+  (bedrock-ide/leader
+   "SPC" 'execute-extended-command
+   ":"   'execute-extended-command
+
+   "p" '(:ignore t :which-key "project")
+   "p p" 'project-switch-project
+   "p f" 'project-find-file
+   "p b" 'consult-project-buffer
+   "p d" 'project-find-dir
+   "p g" 'project-find-regexp
+   "p c" 'project-compile
+   "p k" 'project-kill-buffers
+   "p t" 'ghostel-project
+
+   "f" '(:ignore t :which-key "file")
+   "f f" 'find-file
+   "f r" 'consult-recent-file
+   "f s" 'save-buffer
+   "f d" 'project-dired
+   "f e" 'bedrock-ide/find-config
+
+   "b" '(:ignore t :which-key "buffer")
+   "b b" 'consult-buffer
+   "b i" 'ibuffer
+   "b k" 'kill-current-buffer
+   "b s" 'save-buffer
+
+   "w" '(:ignore t :which-key "window")
+   "w v" 'split-window-right
+   "w s" 'split-window-below
+   "w d" 'delete-window
+   "w o" 'delete-other-windows
+   "w h" 'windmove-left
+   "w j" 'windmove-down
+   "w k" 'windmove-up
+   "w l" 'windmove-right
+
+   "g" '(:ignore t :which-key "git")
+   "g s" 'magit-status
+   "g d" 'magit-diff-unstaged
+   "g b" 'magit-blame-addition
+   "g l" 'magit-log-buffer-file
+
+   "s" '(:ignore t :which-key "search")
+   "s s" 'consult-line
+   "s p" 'consult-ripgrep
+   "s o" 'consult-outline
+   "/"   'consult-ripgrep
+
+   "o" '(:ignore t :which-key "open")
+   "o p" 'treemacs
+   "o t" 'ghostel
+   "o n" 'ghostel-next
+   "o e" 'eshell
+   "o b" 'xwidget-webkit-browse-url
+
+   "h" '(:ignore t :which-key "help")
+   "h f" 'describe-function
+   "h v" 'describe-variable
+   "h k" 'describe-key
+   "h h" 'help-for-help
+
+   "TAB" '(:ignore t :which-key "tabs")
+   "TAB TAB" 'tab-switch
+   "TAB n" 'tab-new
+   "TAB d" 'tab-close
+   "TAB r" 'tab-rename
+   "TAB ]" 'tab-next
+   "TAB [" 'tab-previous
+   "TAB p" 'bedrock-ide/project-tab
+
+   "q" '(:ignore t :which-key "quit")
+   "q q" 'save-buffers-kill-emacs
+   "q f" 'delete-frame))
+
+(defun bedrock-ide/find-config ()
+  "Open the Bedrock init file."
+  (interactive)
+  (find-file (expand-file-name "init.el" user-emacs-directory)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;;   Treemacs file tree
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package treemacs
+  :custom
+  (treemacs-is-never-other-window t)
+  :config
+  (treemacs-follow-mode t)
+  (treemacs-filewatch-mode t)
+  (treemacs-fringe-indicator-mode 'always))
+
+(use-package treemacs-evil
+  :after treemacs)
+
+(use-package nerd-icons)
+
+(use-package treemacs-nerd-icons
+  :after (treemacs nerd-icons)
+  :config
+  (treemacs-nerd-icons-config))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;;   Startup project picker + tree on project switch
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defvar bedrock-ide--project-list-shown nil)
+
+(defun bedrock-ide/maybe-show-project-list ()
+  "Show the list of known projects once, on the first GUI frame."
+  (unless bedrock-ide--project-list-shown
+    (setq bedrock-ide--project-list-shown t)
+    (when (and (display-graphic-p)
+               (fboundp 'project-switch-project)
+               (project-known-project-roots))
+      ;; DIR is a required arg in Emacs 31; interactive form runs the
+      ;; project prompter for us.
+      (call-interactively #'project-switch-project))))
+
+;; emacs-startup-hook covers plain GUI launches; server-after-make-frame-hook
+;; covers daemon + first emacsclient frame.  One-shot either way.
+(add-hook 'emacs-startup-hook #'bedrock-ide/maybe-show-project-list)
+(add-hook 'server-after-make-frame-hook #'bedrock-ide/maybe-show-project-list)
+
+(defun bedrock-ide/open-project-tree (&rest _)
+  "Display the current project in treemacs."
+  (when (fboundp 'treemacs-add-and-display-current-project)
+    (treemacs-add-and-display-current-project)))
+
+;; Whenever you switch projects (SPC p p), open its file tree
+(advice-add 'project-switch-project :after #'bedrock-ide/open-project-tree)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;;   Tabs (workspaces for grouping buffers)
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun bedrock-ide/project-tab ()
+  "Switch to a tab dedicated to the current project, creating it if needed.
+Buffers and window layout stay grouped per tab, so each project gets
+its own workspace."
+  (interactive)
+  (if-let* ((project (project-current))
+            (name (file-name-nondirectory
+                   (directory-file-name (project-root project)))))
+      (if (member name (mapcar (lambda (tab) (cdr (assq 'name tab)))
+                               (funcall tab-bar-tabs-function)))
+          (tab-bar-select-tab-by-name name)
+        (tab-new)
+        (tab-bar-rename-tab name))
+    (message "Not in a project; use SPC TAB n for a blank tab")))
+
+;; The built binary's dumped loaddefs lacks this autoload; register it
+;; explicitly so SPC o b works.
+(autoload 'xwidget-webkit-browse-url "xwidget" nil t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;;   Ghostel terminal (libghostty)
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package ghostel
+  :custom
+  (ghostel-module-auto-install t)       ; auto-download prebuilt module, don't ask
+  :commands (ghostel ghostel-project ghostel-project-list-buffers))
+
+(use-package evil-ghostel
+  :after (ghostel evil)
+  :hook (ghostel-mode . evil-ghostel-mode))
+
+(with-eval-after-load 'project
+  (add-to-list 'project-switch-commands '(ghostel-project "Ghostel") t)
+  (add-to-list 'project-switch-commands
+               '(ghostel-project-list-buffers "Ghostel buffers") t))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;;   Eglot LSP
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package eglot
+  :ensure nil
+  :hook ((go-ts-mode
+          rust-ts-mode
+          typescript-ts-mode
+          tsx-ts-mode
+          js-ts-mode)
+         . eglot-ensure))
+
+;; Official tree-sitter grammar sources; run M-x treesit-install-language-grammar
+;; (or treesit-install-all-available-grammars) to install/update.
+(use-package treesit
+  :ensure nil
+  :custom
+  (treesit-language-source-alist
+   '((rust . ("https://github.com/tree-sitter/tree-sitter-rust"))
+     (go . ("https://github.com/tree-sitter/tree-sitter-go"))
+     (gomod . ("https://github.com/camdencheek/tree-sitter-go-mod"))
+     (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript"))
+     (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" nil "typescript/src"))
+     (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" nil "tsx/src"))
+     (json . ("https://github.com/tree-sitter/tree-sitter-json"))
+     (yaml . ("https://github.com/tree-sitter-grammars/tree-sitter-yaml")))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;;   Font
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Berkeley Mono, 14pt.  Icon glyphs (nerd-icons/treemacs) live in the
+;; Private Use Area, which Berkeley Mono doesn't cover; route them to
+;; Symbols Nerd Font Mono so they render crisply instead of tofu.
+;; Install fonts with: brew install --cask font-berkeley-mono (or your own copy)
+;;   and: brew install --cask font-symbols-only-nerd-font
+(use-package emacs
+  :ensure nil
+  :config
+  (when (display-graphic-p)
+    (let ((berkeley (seq-find (lambda (f) (string-match-p "Berkeley" f))
+                              (font-family-list))))
+      (cond (berkeley
+             (set-face-attribute 'default nil :family berkeley :height 140))
+            ((member "JetBrainsMono Nerd Font" (font-family-list))
+             (set-face-attribute 'default nil
+                                 :family "JetBrainsMono Nerd Font" :height 130))))
+    (dolist (range '((#xE000 . #xF8FF) (#xF0000 . #xFFFFD)))
+      (set-fontset-font t range
+                        (font-spec :family "Symbols Nerd Font Mono")
+                        nil 'prepend))))

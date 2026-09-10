@@ -84,7 +84,9 @@
 
 ;; On macOS, make the first click raise the window but don't
 ;; reposition the cursor to where the click happened.
-(setopt ns-click-through nil)
+;; (guarded: `ns-click-through' only exists in macOS/NS builds)
+(when (boundp 'ns-click-through)
+  (setopt ns-click-through nil))
 
 ;; Prefer horizontal split on landscape monitors: `longest' is
 ;; default; can be `vertical' or `horizontal'.
@@ -143,7 +145,8 @@ If the new path's directories does not exist, create them."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Show the help buffer after startup---makes it a little bit like nano
-(add-hook 'after-init-hook 'help-quick)
+;; (toggle manually with `C-h C-q' if you ever want it back)
+;(add-hook 'after-init-hook 'help-quick)
 (setopt view-lossage-auto-refresh t)
 
 ;; which-key: shows a popup of available keybindings when typing a long key
@@ -330,13 +333,16 @@ If the new path's directories does not exist, create them."
 
 ;; UI/UX enhancements mostly focused on minibuffer and autocompletion interfaces
 ;; These ones are *strongly* recommended!
-;(load-file (expand-file-name "extras/base.el" user-emacs-directory))
+(load-file (expand-file-name "extras/base.el" user-emacs-directory))
 
 ;; Packages for software development
-;(load-file (expand-file-name "extras/dev.el" user-emacs-directory))
+(load-file (expand-file-name "extras/dev.el" user-emacs-directory))
 
 ;; Vim-bindings in Emacs (evil-mode configuration)
-;(load-file (expand-file-name "extras/vim-like.el" user-emacs-directory))
+(load-file (expand-file-name "extras/vim-like.el" user-emacs-directory))
+
+;; Custom Doom-like IDE layer: SPC leader, treemacs, ghostel, LSP
+(load-file (expand-file-name "extras/ide.el" user-emacs-directory))
 
 ;; Org-mode configuration
 ;; WARNING: need to customize things inside the elisp file before use! See
@@ -368,10 +374,6 @@ If the new path's directories does not exist, create them."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
-
- ;; This sets the default font for Emacs. Height is in 1/10 pt; configure as desired.
- ;; The example font listed here, Iosevka Output, is available here: https://codeberg.org/ashton314/iosevka-output
- ;; '(default ((t (:weight normal :height 130 :width expanded :family "Iosevka Output"))))
  )
 
 (setq gc-cons-threshold (or bedrock--initial-gc-threshold 800000))

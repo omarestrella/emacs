@@ -40,6 +40,9 @@
 
 ;; These settings apply to *all* frames.
 (setq default-frame-alist '(
+                            ;; Default window size, in characters
+                            (width . 140)
+                            (height . 42)
                             ;; You can turn off scroll bars by uncommenting these lines:
                             ;; (vertical-scroll-bars . nil)
                             ;; (horizontal-scroll-bars . nil)
@@ -54,7 +57,8 @@
 ;; These settings apply to the first frame created. The
 ;; (back|fore)ground-color settings need to live here so that a
 ;; theme's background color applies correctly to subsequent frames.
-(setq initial-frame-alist '((fullscreen . maximized)
+(setq initial-frame-alist '((width . 140)
+                            (height . 42)
                             ;; Setting the face in here prevents flashes of
                             ;; color as the theme gets activated
                             (background-color . "#000000")
