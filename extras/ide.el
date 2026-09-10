@@ -333,6 +333,81 @@ its own workspace."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
+;;;   Session restore (desktop.el)
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Restores frames, windows, buffers and point across restarts.  Saving
+;; happens on exit and periodically once an Emacs is up and running.
+(use-package desktop
+  :ensure nil
+  :custom
+  (desktop-path (list user-emacs-directory))
+  (desktop-save 'ask-if-new)
+  (desktop-auto-save-timeout 180)
+  (desktop-restore-frames t)
+  (desktop-restore-in-current-display t)
+  (desktop-load-locked-desktop t)
+  :config
+  (desktop-save-mode 1))
+
+;; Ghostel terminal buffers: restore directory + identity (not scrollback)
+(use-package ghostel-desktop
+  :ensure nil                           ; ships inside the ghostel package
+  :after ghostel
+  :demand t)
+
+;; Webkit buffers: save the URL and re-open it on restore
+(defun bedrock-ide--webkit-desktop-save ()
+  "Return desktop data for an xwidget-webkit buffer: (URL)."
+  (when (xwidget-at (point-min))
+    (list (xwidget-webkit-uri (xwidget-webkit-current-session)))))
+
+(defun bedrock-ide--webkit-desktop-restore (_file name misc)
+  "Re-open the webkit session saved from buffer NAME with MISC data."
+  (if (and (require 'xwidget nil t)
+           (listp misc)
+           (car misc)
+           (not (string= (car misc) "")))
+      (let ((buf (xwidget-webkit--create-new-session-buffer (car misc))))
+        (with-current-buffer buf
+          (rename-buffer name)
+          (xwidget-webkit-goto-uri (xwidget-at (point-min)) (car misc)))
+        buf)
+    nil))
+
+(with-eval-after-load 'xwidget
+  (add-hook 'xwidget-webkit-mode-hook
+            (lambda ()
+              (setq-local desktop-save-buffer #'bedrock-ide--webkit-desktop-save)))
+  (add-to-list 'desktop-buffer-mode-handlers
+               '(xwidget-webkit-mode . bedrock-ide--webkit-desktop-restore)))
+
+;; Treemacs: desktop can't save its buffer contents, so remember whether the
+;; tree was open and re-open it (project-follow picks files back up) after
+;; the desktop is read.
+(defvar bedrock-ide--treemacs-was-open nil)
+
+(defun bedrock-ide--treemacs-open-p ()
+  (cl-some (lambda (w)
+             (string-match-p "Treemacs-Buffer" (buffer-name (window-buffer w))))
+           (window-list (selected-frame) 'never-minibuffer nil)))
+
+(defun bedrock-ide--update-treemacs-state ()
+  (setq bedrock-ide--treemacs-was-open (bedrock-ide--treemacs-open-p)))
+
+(advice-add 'desktop-save :before #'bedrock-ide--update-treemacs-state)
+
+(with-eval-after-load 'treemacs
+  (add-to-list 'desktop-globals-to-save 'bedrock-ide--treemacs-was-open)
+  (add-hook 'desktop-after-read-hook
+            (lambda ()
+              (when (and bedrock-ide--treemacs-was-open
+                         (not (bedrock-ide--treemacs-open-p)))
+                (run-with-idle-timer 1 nil #'bedrock-ide/open-project-tree)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
 ;;;   Font
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
