@@ -358,8 +358,9 @@ its own workspace."
   :demand t)
 
 ;; Webkit buffers: save the URL and re-open it on restore
-(defun bedrock-ide--webkit-desktop-save (&optional _dirname)
-  "Return desktop data for an xwidget-webkit buffer: (URL)."
+(defun bedrock-ide--webkit-desktop-save (&rest _args)
+  "Return desktop data for an xwidget-webkit buffer: (URL).
+Called with the desktop dirname, per `desktop-save-buffer' convention."
   (when (xwidget-at (point-min))
     (list (xwidget-webkit-uri (xwidget-webkit-current-session)))))
 
@@ -393,7 +394,7 @@ its own workspace."
              (string-match-p "Treemacs-Buffer" (buffer-name (window-buffer w))))
            (window-list (selected-frame) 'never-minibuffer nil)))
 
-(defun bedrock-ide--update-treemacs-state (&optional _dirname _release-lock)
+(defun bedrock-ide--update-treemacs-state (&rest _args)
   (setq bedrock-ide--treemacs-was-open (bedrock-ide--treemacs-open-p)))
 
 (advice-add 'desktop-save :before #'bedrock-ide--update-treemacs-state)
