@@ -341,8 +341,52 @@ its own workspace."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Eglot handles TS via typescript-language-server, which requires
-;; `typescript' (tsserver) in the project's node_modules.  Projects without
-;; it are expected to fail fast with a clear server error; no global typescript.
+;; `typescript' (tsserver) in the project's node_modules.  In monorepos the
+;; tsserver usually lives one directory below the git root, which TSLS's own
+;; upward-only search misses; so we point initializationOptions.tsserver.path
+;; at it ourselves.  Projects without any typescript stay silent (start
+;; manually with M-x eglot).  gopls and rust-analyzer are machine-installed,
+;; so Go and Rust connect unconditionally.
+(defun bedrock-ide--tsserver-in-project ()
+  "tsserver.js inside the current project: repo root or one dir down."
+  (when-let* ((project (project-current)))
+    (let* ((root (directory-file-name (project-root project)))
+           (direct (expand-file-name "node_modules/typescript/lib/tsserver.js"
+                                     root))
+           found)
+      (if (file-exists-p direct)
+          direct
+        (dolist (pkg (directory-files root nil "^[^.]" nil))
+          (when (and (not found) (file-directory-p pkg))
+            (let ((cand (expand-file-name
+                         "node_modules/typescript/lib/tsserver.js"
+                         (expand-file-name pkg root))))
+              (when (file-exists-p cand) (setq found cand)))))
+        found))))
+
+(defun bedrock-ide/ts-eglot-if-local ()
+  (when (bedrock-ide--tsserver-in-project)
+    (eglot-ensure)))
+
+(defun bedrock-ide--tsl-init-options (_server)
+  (when-let* ((path (bedrock-ide--tsserver-in-project)))
+    (list :tsserver (list :path path))))
+
+(defun bedrock-ide--tsl-contact (&rest _ignored)
+  (list "/opt/homebrew/bin/typescript-language-server" "--stdio"
+        :initializationOptions #'bedrock-ide--tsl-init-options))
+
+(use-package eglot
+  :ensure nil
+  :init
+  (with-eval-after-load 'eglot
+    (setf eglot-server-programs
+          (cons '((js-ts-mode typescript-ts-mode tsx-ts-mode typescript-mode)
+                  . bedrock-ide--tsl-contact)
+                eglot-server-programs)))
+  :hook ((go-ts-mode rust-ts-mode) . eglot-ensure)
+         ((typescript-ts-mode tsx-ts-mode js-ts-mode) . bedrock-ide/ts-eglot-if-local))
+
 ;; Official tree-sitter grammar sources; run M-x treesit-install-language-grammar
 ;; (or treesit-install-all-available-grammars) to install/update.
 (use-package treesit
