@@ -357,11 +357,13 @@ its own workspace."
       (if (file-exists-p direct)
           direct
         (dolist (pkg (directory-files root nil "^[^.]" nil))
-          (when (and (not found) (file-directory-p pkg))
-            (let ((cand (expand-file-name
-                         "node_modules/typescript/lib/tsserver.js"
-                         (expand-file-name pkg root))))
-              (when (file-exists-p cand) (setq found cand)))))
+          (let ((pkgdir (expand-file-name (directory-file-name pkg) root)))
+            (when (and (not found)
+                       (file-directory-p pkgdir))
+              (let ((cand (expand-file-name
+                           "node_modules/typescript/lib/tsserver.js"
+                           pkgdir)))
+                (when (file-exists-p cand) (setq found cand))))))
         found))))
 
 (defun bedrock-ide/ts-eglot-if-local ()
@@ -384,8 +386,8 @@ its own workspace."
           (cons '((js-ts-mode typescript-ts-mode tsx-ts-mode typescript-mode)
                   . bedrock-ide--tsl-contact)
                 eglot-server-programs)))
-  :hook ((go-ts-mode rust-ts-mode) . eglot-ensure)
-         ((typescript-ts-mode tsx-ts-mode js-ts-mode) . bedrock-ide/ts-eglot-if-local))
+  :hook (((go-ts-mode rust-ts-mode) . eglot-ensure)
+         ((typescript-ts-mode tsx-ts-mode js-ts-mode) . bedrock-ide/ts-eglot-if-local)))
 
 ;; Official tree-sitter grammar sources; run M-x treesit-install-language-grammar
 ;; (or treesit-install-all-available-grammars) to install/update.
