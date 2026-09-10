@@ -393,7 +393,7 @@ its own workspace."
              (string-match-p "Treemacs-Buffer" (buffer-name (window-buffer w))))
            (window-list (selected-frame) 'never-minibuffer nil)))
 
-(defun bedrock-ide--update-treemacs-state ()
+(defun bedrock-ide--update-treemacs-state (&optional _dirname _release-lock)
   (setq bedrock-ide--treemacs-was-open (bedrock-ide--treemacs-open-p)))
 
 (advice-add 'desktop-save :before #'bedrock-ide--update-treemacs-state)
