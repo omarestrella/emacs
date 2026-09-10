@@ -358,7 +358,7 @@ its own workspace."
   :demand t)
 
 ;; Webkit buffers: save the URL and re-open it on restore
-(defun bedrock-ide--webkit-desktop-save ()
+(defun bedrock-ide--webkit-desktop-save (&optional _dirname)
   "Return desktop data for an xwidget-webkit buffer: (URL)."
   (when (xwidget-at (point-min))
     (list (xwidget-webkit-uri (xwidget-webkit-current-session)))))
