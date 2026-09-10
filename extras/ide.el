@@ -116,6 +116,24 @@
    "a u" 'agent-shell-auggie-start-agent
    "a m" 'agent-shell-prompt-compose
 
+   "c" '(:ignore t :which-key "code")
+   "c d" 'xref-find-definitions
+   "c r" 'xref-find-references
+   "c s" 'consult-eglot
+   "c R" 'eglot-rename
+   "c a" 'eglot-code-actions
+   "c f" 'eglot-format
+   "c q" 'eglot-code-action-quickfix
+   "c o" 'eglot-code-action-organize-imports
+   "c h" 'eldoc-doc-buffer
+   "c t" 'eglot-find-typeDefinition
+   "c i" 'eglot-find-implementation
+
+   "e" '(:ignore t :which-key "errors")
+   "e n" 'flymake-goto-next-error
+   "e p" 'flymake-goto-prev-error
+   "e l" 'flymake-show-project-diagnostics
+
    "f" '(:ignore t :which-key "file")
    "f f" 'find-file
    "f r" 'consult-recent-file
@@ -216,6 +234,25 @@
 
 ;; `agent-shell-openai-start-codex' is missing from the package's autoloads
 (autoload 'agent-shell-openai-start-codex "agent-shell-openai" nil t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;;   Hover popups + LSP niceties
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; VS Code/Zed-style hover: eglot feeds eldoc hover info automatically;
+;; eldoc-box shows it in a floating frame at point.
+(use-package eldoc-box
+  :hook (eglot-managed-mode . bedrock-ide/enable-hover))
+
+(defun bedrock-ide/enable-hover ()
+  (eldoc-box-hover-at-point-mode 1))
+
+;; K shows the hover docs for the thing at point
+(general-def :states 'normal :keymaps 'override "K" 'eldoc-doc-buffer)
+
+(use-package consult-eglot)
 
 (use-package treemacs
   :custom
