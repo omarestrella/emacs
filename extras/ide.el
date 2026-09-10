@@ -38,7 +38,10 @@
       (list "/opt/homebrew/bin"
             "/usr/local/bin"
             (expand-file-name "~/.cargo/bin")
-            (expand-file-name "~/.local/bin")))
+            (expand-file-name "~/.local/bin")
+            ;; fnm-managed node globals (codex-acp, auggie) + opencode
+            (expand-file-name "~/.local/share/fnm/aliases/default/bin")
+            (expand-file-name "~/.opencode/bin")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -105,6 +108,13 @@
    "p c" 'project-compile
    "p k" 'project-kill-buffers
    "p t" 'ghostel-project
+
+   "a" '(:ignore t :which-key "agent")
+   "a a" 'agent-shell
+   "a c" 'agent-shell-openai-start-codex
+   "a o" 'agent-shell-opencode-start-agent
+   "a u" 'agent-shell-auggie-start-agent
+   "a m" 'agent-shell-prompt-compose
 
    "f" '(:ignore t :which-key "file")
    "f f" 'find-file
@@ -174,9 +184,27 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;;   Treemacs file tree
+;;;   Agent shells (ACP): Codex, opencode, Auggie
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; agents: codex-acp + auggie (npm via fnm), opencode (~/.opencode/bin) are on
+;; exec-path (added in Environment).  Login flows run in-buffer on first use.
+(use-package agent-shell
+  :commands (agent-shell
+             agent-shell-prompt-compose
+             agent-shell-openai-start-codex
+             agent-shell-opencode-start-agent
+             agent-shell-auggie-start-agent)
+  :config
+  ;; agent-shell buffers are chat-like, not modal targets
+  (dolist (mode '(agent-shell-diff-mode
+                  agent-shell-viewport-edit-mode
+                  agent-shell-viewport-view-mode))
+    (evil-set-initial-state mode 'emacs)))
+
+;; `agent-shell-openai-start-codex' is missing from the package's autoloads
+(autoload 'agent-shell-openai-start-codex "agent-shell-openai" nil t)
 
 (use-package treemacs
   :custom
