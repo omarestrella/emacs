@@ -138,6 +138,11 @@
    "w j" 'windmove-down
    "w k" 'windmove-up
    "w l" 'windmove-right
+   "w =" 'balance-window
+   "w <" 'shrink-window-horizontally
+   "w >" 'enlarge-window-horizontally
+   "w ^" 'enlarge-window
+   "w -" 'shrink-window
 
    "g" '(:ignore t :which-key "git")
    "g s" 'magit-status
