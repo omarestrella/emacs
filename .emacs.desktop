@@ -1,0 +1,44 @@
+;; -*- mode: emacs-lisp; lexical-binding:t; coding: utf-8-emacs; -*-
+;; --------------------------------------------------------------------------
+;; Desktop File for Emacs
+;; --------------------------------------------------------------------------
+;; Created Thu Sep 10 09:04:52 2026
+;; Desktop file format version 208
+;; Emacs version 31.1
+
+;; Global section:
+(setq desktop-saved-frameset [frameset 1 (27298 43764 830229 0) (desktop . "208") "omarestrella@Omars-MacBook-Air.local" nil nil ((((minibuffer . t) (fontsize . 0) (font . "-*-Berkeley Mono-regular-normal-condensed-*-14-*-*-*-m-0-iso10646-1") (border-width . 0) (internal-border-width . 2) (child-frame-border-width) (right-divider-width . 0) (bottom-divider-width . 0) (vertical-scroll-bars . right) (horizontal-scroll-bars) (foreground-color . "#ffffff") (background-color . "#000000") (line-spacing) (left-fringe . 8) (right-fringe . 8) (no-special-glyphs) (undecorated) (ns-appearance . dark) (ns-transparent-titlebar . t) (z-group) (no-focus-on-map) (no-accept-focus) (menu-bar-lines . 1) (tab-bar-lines . 0) (tool-bar-lines . 0) (title) (inhibit-double-buffering) (icon-type) (auto-raise) (auto-lower) (cursor-type . box) (scroll-bar-width . 17) (scroll-bar-height . 17) (alpha) (alpha-background) (borders-respect-alpha-background) (fullscreen) (scroll-bar-foreground . "#646464") (scroll-bar-background . "#1e1e1e") (display-type . color) (background-mode . dark) (cursor-color . "#ffffff") (font-parameter) (environment) (tabs (current-tab (name . "server.ts") (explicit-name))) (last-focus-update . t) (frameset--id . "02F9-57E7-2866-182A") (frameset--mini t . t) (frameset--text-pixel-width . 2356) (frameset--text-pixel-height . 1323) (height . 82) (width . 336) (modeline . t) (unsplittable) (left . 400) (top . 30) (icon-name) (visibility . t) (display . "Omars-MacBook-Air.local") (explicit-name) (tool-bar-position . top)) ((min-height . 4) (min-width . 55) (min-height-ignore . 4) (min-width-ignore . 21) (min-height-safe . 1) (min-width-safe . 6) (min-pixel-height . 64) (min-pixel-width . 385) (min-pixel-height-ignore . 64) (min-pixel-width-ignore . 147) (min-pixel-height-safe . 16) (min-pixel-width-safe . 42)) hc (pixel-width . 2389) (pixel-height . 1307) (total-width . 341) (total-height . 82) (normal-height . 1.0) (normal-width . 1.0) (combination-limit . t) (leaf (pixel-width . 245) (pixel-height . 1307) (total-width . 35) (total-height . 82) (normal-height . 1.0) (normal-width . 0.13020277481323372) (parameters (window-side . left) (window-slot . 0)) (buffer " *Treemacs-Buffer-#<frame *scratch* 0xc5e733b58>" (selected) (hscroll . 0) (fringes 8 8 nil nil) (margins nil) (scroll-bars nil 3 t nil 0 t nil) (vscroll . 0) (dedicated . t) (point . 1630) (start . 700))) (hc (last . t) (pixel-width . 2144) (pixel-height . 1307) (total-width . 306) (total-height . 82) (normal-height . 1.0) (normal-width . 0.8697972251867663) (combination-limit . t) (leaf (pixel-width . 1072) (pixel-height . 1307) (total-width . 153) (total-height . 82) (normal-height . 1.0) (normal-width . 0.5) (buffer "server.ts" (selected) (hscroll . 0) (fringes 8 8 nil nil) (margins nil) (scroll-bars nil 3 t nil 0 t nil) (vscroll . 0) (dedicated) (point . 1543) (start . 1))) (leaf (last . t) (pixel-width . 1072) (pixel-height . 1307) (total-width . 153) (total-height . 82) (normal-height . 1.0) (normal-width . 0.5) (buffer "*xwidget-webkit: Aria Networks*" (selected . t) (hscroll . 0) (fringes 8 8 nil nil) (margins nil) (scroll-bars nil 3 t nil 0 t nil) (vscroll . 0) (dedicated) (point . 1) (start . 1)) (prev-buffers ("*Messages*" 1 1988))))))])
+(setq bedrock-ide--treemacs-was-open 2)
+(setq desktop-missing-file-warning nil)
+(setq tags-file-name nil)
+(setq tags-table-list nil)
+(setq search-ring nil)
+(setq regexp-search-ring nil)
+(setq register-alist '((48 . "apply: Wrong number of arguments: #[(&optional _dirname _release-lock) ((setq bedrock-ide--treemacs-was-open (bedrock-ide--treemacs-open-p))) (t)], 4\n")))
+(setq file-name-history '("~/.emacs.d/" "~/.emacs.d/extras/ide.el" "~/.emacs.d/" "~/.emacs.d/extras/ide.el" "~/.emacs.d/" "~/.emacs-bedrock/extras/ide.el" "~/.emacs-bedrock/" #("/Users/omarestrella/Development/aria/aureka/typescript/apps/app/app/lib/agents/v2/server.ts" 0 91 (project "~/Development/aria/aureka/")) "~/Development/aria/aureka/" #("/Users/omarestrella/Development/aria/aureka/typescript/apps/app/app/lib/agents/v2/server.ts" 0 91 (project "~/Development/aria/aureka/")) "~/Development/aria/aureka/" "~/Development/"))
+
+;; Buffer section -- buffers listed in same order as in buffer list:
+(desktop-create-buffer 208
+  nil
+  "*xwidget-webkit: Aria Networks*"
+  'xwidget-webkit-mode
+  '(font-lock-mode evil-local-mode)
+  1
+  '(1 nil)
+  t
+  '("http://localhost:5156/session/01a08b59-f1d3-75ef-9331-4fc953ef7195")
+  '((buffer-display-time 27298 43746 308657 0) (overwrite-mode))
+  '((mark-ring nil)))
+
+(desktop-create-buffer 208
+  "/Users/omarestrella/Development/aria/aureka/typescript/apps/app/app/lib/agents/v2/server.ts"
+  "server.ts"
+  'typescript-ts-mode
+  '(font-lock-mode display-line-numbers-mode corfu-mode evil-local-mode)
+  1543
+  '(1544 nil)
+  nil
+  nil
+  '((buffer-display-time 27298 43744 152086 0) (buffer-file-coding-system . utf-8-unix))
+  '((mark-ring nil)))
+

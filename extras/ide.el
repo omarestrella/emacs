@@ -157,6 +157,7 @@
    "o n" 'ghostel-next
    "o e" 'eshell
    "o b" 'xwidget-webkit-browse-url
+   "o B" 'bedrock-ide/webkit-new-session
 
    "h" '(:ignore t :which-key "help")
    "h f" 'describe-function
@@ -176,6 +177,11 @@
    "q" '(:ignore t :which-key "quit")
    "q q" 'save-buffers-kill-emacs
    "q f" 'delete-frame))
+
+(defun bedrock-ide/webkit-new-session (url)
+  "Open a NEW xwidget we session for URL, instead of navigating the last one."
+  (interactive "sURL: ")
+  (xwidget-webkit-browse-url url 'new-session))
 
 (defun bedrock-ide/find-config ()
   "Open the Bedrock init file."
