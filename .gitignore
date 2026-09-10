@@ -10,3 +10,5 @@
 /emacs-backup/
 /projects.eld
 /tramp
+/.emacs.desktop
+/.emacs.desktop.lock
