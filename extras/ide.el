@@ -236,23 +236,8 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defvar bedrock-ide--project-list-shown nil)
-
-(defun bedrock-ide/maybe-show-project-list ()
-  "Show the list of known projects once, on the first GUI frame."
-  (unless bedrock-ide--project-list-shown
-    (setq bedrock-ide--project-list-shown t)
-    (when (and (display-graphic-p)
-               (fboundp 'project-switch-project)
-               (project-known-project-roots))
-      ;; DIR is a required arg in Emacs 31; interactive form runs the
-      ;; project prompter for us.
-      (call-interactively #'project-switch-project))))
-
-;; emacs-startup-hook covers plain GUI launches; server-after-make-frame-hook
-;; covers daemon + first emacsclient frame.  One-shot either way.
-(add-hook 'emacs-startup-hook #'bedrock-ide/maybe-show-project-list)
-(add-hook 'server-after-make-frame-hook #'bedrock-ide/maybe-show-project-list)
+;; Startup project list was removed in favor of desktop.el session restore.
+;; Open a project manually with SPC p p.
 
 (defun bedrock-ide/open-project-tree (&rest _)
   "Display the current project in treemacs."
