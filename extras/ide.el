@@ -303,15 +303,12 @@ its own workspace."
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package eglot
-  :ensure nil
-  :hook ((go-ts-mode
-          rust-ts-mode
-          typescript-ts-mode
-          tsx-ts-mode
-          js-ts-mode)
-         . eglot-ensure))
-
+;; TSLS needs either a workspace node_modules/typescript or an explicit
+;; tsserver.path.  Homebrew's typescript formula is TS 7 (Go), which ships
+;; no tsserver, so ~/node_modules/typescript is symlinked to the global
+;; typescript@5 install (via fnm's stable default alias); TSLS's module
+;; search climbs parent directories and picks it up for every project
+;; under home.  Projects that install their own typescript take precedence.
 ;; Official tree-sitter grammar sources; run M-x treesit-install-language-grammar
 ;; (or treesit-install-all-available-grammars) to install/update.
 (use-package treesit
