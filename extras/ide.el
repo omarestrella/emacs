@@ -246,6 +246,15 @@
 (use-package eldoc-box
   :hook (eglot-managed-mode . bedrock-ide/enable-hover))
 
+;; Git gutter: +/-/~ colored marks in the fringe for added/edited/deleted lines
+(use-package diff-hl
+  :custom
+  (diff-hl-show-hunk-inline-popup-mode t)
+  :config
+  (global-diff-hl-mode)
+  (diff-hl-flydiff-mode)                ; refresh without disk save
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
+
 (defun bedrock-ide/enable-hover ()
   (eldoc-box-hover-at-point-mode 1))
 
