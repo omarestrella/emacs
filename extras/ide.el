@@ -527,7 +527,12 @@ Called with the desktop dirname, per `desktop-save-buffer' convention."
     (let ((berkeley (seq-find (lambda (f) (string-match-p "Berkeley" f))
                               (font-family-list))))
       (cond (berkeley
-             (set-face-attribute 'default nil :family berkeley :height 140))
+             ;; Pin width/weight explicitly: otherwise the fontset may pick
+             ;; the Condensed/Retina cuts, which render much heavier and
+             ;; darker than the reference Berkeley Mono.
+             (set-face-attribute 'default nil
+                                 :family berkeley :height 140
+                                 :weight 'normal :width 'normal))
             ((member "JetBrainsMono Nerd Font" (font-family-list))
              (set-face-attribute 'default nil
                                  :family "JetBrainsMono Nerd Font" :height 130))))
