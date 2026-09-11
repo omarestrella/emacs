@@ -319,8 +319,12 @@ If the new path's directories does not exist, create them."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package emacs
-  :config
-  (load-theme 'modus-vivendi))          ; for light theme, use modus-operandi
+  :init
+  ;; Nightfox-family themes (light=Dawnfox, dark=Nightfox) live in themes/;
+  ;; which one is active is driven by OS appearance via auto-dark (see
+  ;; extras/ide.el).
+  (add-to-list 'custom-theme-load-path
+               (expand-file-name "themes" user-emacs-directory)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
