@@ -446,7 +446,12 @@ its own workspace."
   (desktop-restore-in-current-display t)
   (desktop-load-locked-desktop t)
   :config
-  (desktop-save-mode 1))
+  (desktop-save-mode 1)
+  ;; Strip appearance frame-parameters from saved frames: the desktop file
+  ;; must not carry colors — themes (auto-dark picked) own every color.
+  (dolist (param '(:background-color :foreground-color :cursor-color
+                   :ns-appearance :ns-transparent-titlebar))
+    (setf (alist-get param frameset-filter-alist) nil)))
 
 ;; Ghostel terminal buffers: restore directory + identity (not scrollback)
 (use-package ghostel-desktop
